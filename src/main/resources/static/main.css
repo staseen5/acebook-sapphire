@@ -30,3 +30,37 @@
     border: 1px solid black;
     padding: 12px;
 }
+
+/* Navbar */
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.navbar {
+    background-color: #1540a3;
+    padding: 20px;
+    font-family: monospace;
+    position: fixed;
+
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.navbar a {
+    color: white;
+    margin-right: 20px;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+}
