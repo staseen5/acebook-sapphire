@@ -20,13 +20,14 @@
 
     <div class="post-content-container">
         <p th:text="${post_with_comments.key.content}"/>
+        <small th:text="${#temporals.format(post_with_comments.key.createdAt, 'dd MMM yyyy HH:mm')}"></small>
     </div>
 
     <ul th:each="comment: ${post_with_comments.value}">
         <li th:text="${comment.body}" />
+        <small th:text="${#temporals.format(comment.commentedOn, 'dd MMM yyyy HH:mm')}"/>
     </ul>
 
-    <small th:text="${#temporals.format(post.createdAt, 'dd MMM yyyy HH:mm')}"></small>
 </div>
 
 </body>
