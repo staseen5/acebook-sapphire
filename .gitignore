@@ -13,3 +13,4 @@ dependency-reduced-pom.xml
 **/application.yml
 **/application-dev.properties
 **/application-test.properties
+/src/main/resources/env.properties

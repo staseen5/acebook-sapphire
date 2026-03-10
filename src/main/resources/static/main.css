@@ -1,12 +1,18 @@
-.posts-main {
-    border-collapse: collapse;
+body {
+    margin: 0;
 }
 
-.post-main {
-    border: 1px solid #999;
-    padding: 0.5rem;
-    text-align: left;
-    margin-bottom: 0.5rem;;
+main {
+    margin: 0 auto 0 auto;
+    padding: 12px;
+    max-width: 1000px;
+
+    min-height: 100vh;
+}
+
+footer {
+    height: 60px;
+    background-color: lightslategrey;
 }
 
 /* Images */
@@ -29,4 +35,18 @@
 .post-content-container {
     border: 1px solid black;
     padding: 12px;
+}
+
+
+
+/* From Original Repo */
+.posts-main {
+    border-collapse: collapse;
+}
+
+.post-main {
+    border: 1px solid #999;
+    padding: 0.5rem;
+    text-align: left;
+    margin-bottom: 0.5rem;;
 }

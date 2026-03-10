@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/main_layout :: layout(~{::title}, ~{::main})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <link rel="stylesheet" href="/main.css"/>
+</head>
+
+<body>
+
+<main>
+
+    <div id="user-info-container" style="display: flex; align-items: center; padding: 12px; margin-bottom: 12px; gap:12px; border: 1px solid black">
+
+        <img style="width: 150px; height: 150px;"
+             alt="profile-picture"
+             src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg">
+
+        <div id="user-infor-text" style="flex: 1;">
+
+            <div id="user-full-name-text" style="display: flex; gap: 6px;">
+                <h1>First Name</h1>
+                <h1>Last Name</h1>
+            </div>
+
+            <h4 id="username-text" th:text="'username: ' + ${user.username}"></h4>
+            <p id="user-id-text" th:text="'userID: ' + ${user.id}"></p>
+
+        </div>
+    </div>
+
+    <div id="page-container" style="display: flex; gap: 12px;">
+
+        <div id="left-page-section" style="flex:1; padding:12px; border: 1px solid black;">
+
+            <div id="friends-container" style="margin: 6px;">
+
+                <h3 id="friends-header">MY FRIENDS:</h3>
+
+                <div id="friends-list" style="display: flex">
+                    <img style="width: 50px; height: 50px; margin: 6px;"
+                         src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg">
+                    <img style="width: 50px; height: 50px; margin: 6px;"
+                         src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg">
+                    <img style="width: 50px; height: 50px; margin: 6px;"
+                         src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg">
+                    <img style="width: 50px; height: 50px; margin: 6px;"
+                         src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg">
+                    <img style="width: 50px; height: 50px; margin: 6px;"
+                         src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg">
+                </div>
+
+            </div>
+
+            <div id="photos-container" style="margin: 6px;">
+                <h3>MY PHOTOS:</h3>
+                <img style="width: 50px; height: 50px; margin: 6px;"
+                     src="https://s.yimg.com/ny/api/res/1.2/RSWsPdqcgZ4uhM_6ELpzMA--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD03OTg7Y2Y9d2VicA--/https://media.zenfs.com/en/travel.travelleisure.com/fb8d168ea18a4fb2d4eaa6a55dad64eb">
+            </div>
+        </div>
+
+        <div id="right-page-section" style="flex:2; padding:12px; border: 1px solid black;">
+
+            <h3>MY POSTS:</h3>
+
+            <div id="post-placeholder-01" class="post-container">
+                <div style="display: flex; align-items: center">
+                    <img style="width: 50px; height: 50px; margin: 6px;"
+                         src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg">
+                    <div>
+                        <h3>User's Name</h3>
+                        <h4>Datetime</h4>
+                    </div>
+                </div>
+                <div style="border: 1px solid grey; padding:6px; margin:6px; border-radius: 6px;">
+                    <p>This is where the post content will be</p>
+                </div>
+            </div>
+
+            <div id="post-placeholder-02" class="post-container">
+                <div style="display: flex; align-items: center">
+                    <img style="width: 50px; height: 50px; margin: 6px;"
+                         src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg">
+                    <div>
+                        <h3>User's Name</h3>
+                        <h4>Datetime</h4>
+                    </div>
+                </div>
+                <div style="border: 1px solid grey; padding:6px; margin:6px; border-radius: 6px;">
+                    <p>This is where the post content will be</p>
+                </div>
+            </div>
+
+            <div id="post-placeholder-03" class="post-container">
+                <div style="display: flex; align-items: center">
+                    <img style="width: 50px; height: 50px; margin: 6px;"
+                         src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg">
+                    <div>
+                        <h3>User's Name</h3>
+                        <h4>Datetime</h4>
+                    </div>
+                </div>
+                <div style="border: 1px solid grey; padding:6px; margin:6px; border-radius: 6px;">
+                    <p>This is where the post content will be</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</main>
+
+</body>
+</html>
