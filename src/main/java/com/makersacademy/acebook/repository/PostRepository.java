@@ -9,4 +9,5 @@ import java.util.List;
 
 public interface PostRepository extends CrudRepository<Post, Long> {
     List<Post> findAllByOrderByCreatedAtDesc();
+    boolean existsByContentAndImageUrl(String content, String imageUrl);
 }
