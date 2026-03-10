@@ -28,4 +28,8 @@ public class User {
         this.username = username;
         this.enabled = enabled;
     }
+
+    public Long getId() {
+        return this.id;
+    };
 }
