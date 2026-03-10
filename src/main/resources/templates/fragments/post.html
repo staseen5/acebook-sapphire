@@ -22,6 +22,10 @@
         <p th:text="${post.content}"/>
     </div>
 
+    <div>
+        <img th:src="@{/images/heart.png}" alt="Icon" width="24" height="24">
+        <small th:text="${likeCounts[post.id]} + ' likes'"></small>
+    </div>
     <small th:text="${#temporals.format(post.createdAt, 'dd MMM yyyy HH:mm')}"></small>
 </div>
 

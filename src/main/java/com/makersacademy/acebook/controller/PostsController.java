@@ -23,7 +23,7 @@ public class PostsController {
     @Autowired
     PostLikeRepository postLikeRepository;
 
-    @GetMapping("/posts")
+    @GetMapping("/")
     public String index(Model model) {
         Iterable<Post> posts = repository.findAllByOrderByCreatedAtDesc();
 
@@ -38,9 +38,9 @@ public class PostsController {
         return "posts/index";
     }
 
-    @PostMapping("/posts")
+    @PostMapping("/")
     public RedirectView create(@ModelAttribute Post post) {
         repository.save(post);
-        return new RedirectView("/posts");
+        return new RedirectView("/");
     }
 }
