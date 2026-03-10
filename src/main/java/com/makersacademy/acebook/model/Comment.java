@@ -5,11 +5,8 @@ import lombok.Data;
 import lombok.Setter;
 import lombok.Getter;
 
-<<<<<<< HEAD
 import java.time.ZonedDateTime;
 
-=======
->>>>>>> 098e7b4 (Adds comment (read-only))
 @Data
 @Entity
 @Getter
@@ -24,12 +21,9 @@ public class Comment {
     @Column(name="user_id")
     private Long userId;
 
-<<<<<<< HEAD
     @Column(name = "commented_on")
     private ZonedDateTime commentedOn;
 
-=======
->>>>>>> 098e7b4 (Adds comment (read-only))
     @ManyToOne
     @JoinColumn(name="post_id")
     private Post post;
