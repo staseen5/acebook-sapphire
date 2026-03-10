@@ -19,14 +19,9 @@
         <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
     </form>
 
-    <ul th:each="post: ${posts}">
-        <li>
-            <span th:text="${post.content}"></span>
-            <img th:src="@{/images/heart.png}" alt="Icon" width="24" height="24">
-            <small th:text="${likeCounts[post.id]}"></small>
-        </li>
-<!-- If we want to display time   <small th:text="${#temporals.format(post.createdAt, 'dd MMM yyyy HH:mm')}"></small>-->
-    </ul>
+    <div th:each="post: ${posts}">
+        <div th:replace="fragments/post :: post">...</div>
+    </div>
 
     </body>
 </html>
