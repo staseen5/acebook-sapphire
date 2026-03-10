@@ -19,8 +19,8 @@
         <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
     </form>
 
-    <div th:each="post: ${posts}">
-        <div th:replace="fragments/post :: post">...</div>
+    <div th:each="post_with_comments: ${posts_with_comments}">
+        <div th:replace="fragments/post :: post_with_comments">...</div>
     </div>
 
     </body>
