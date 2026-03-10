@@ -87,7 +87,7 @@ public class PostsController {
     @PostMapping("/comments/new")
     public RedirectView create(@ModelAttribute Comment new_comment) {
         commentRepository.save(new_comment);
-        return new RedirectView("/posts");
+        return new RedirectView("/");
     }
  
 }

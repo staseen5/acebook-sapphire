@@ -37,6 +37,17 @@ footer {
     padding: 12px;
 }
 
+.post-likes-container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
 
 /* From Original Repo */

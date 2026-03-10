@@ -20,7 +20,13 @@
 
     <div class="post-content-container">
         <p th:text="${post_with_comments.key.content}"/>
-        <small th:text="${#temporals.format(post_with_comments.key.createdAt, 'dd MMM yyyy HH:mm')}"></small>
+        <div class="post-footer">
+            <small th:text="${#temporals.format(post_with_comments.key.createdAt, 'dd MMM yyyy HH:mm')}"></small>
+            <div class="post-likes-container">
+                <img th:src="@{/images/heart.png}" alt="like" width="16" height="16">
+                <small th:text="${likeCounts[post_with_comments.key.id]} + ' likes'"></small>
+            </div>
+        </div>
     </div>
 
     <form action="#" th:action="@{/comments/new}" th:object="${new_comment}" method="post">
