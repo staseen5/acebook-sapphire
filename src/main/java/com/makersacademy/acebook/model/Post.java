@@ -30,6 +30,9 @@ public class Post {
 
     @OneToMany(mappedBy="post")
     private List<Comment> comments;
+  
+    @Column(name = "image_url")
+    private String imageUrl;
 
     public Post() {}
 
