@@ -3,6 +3,9 @@ package com.makersacademy.acebook.model;
 import jakarta.persistence.*;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.ZonedDateTime;
 
 @Data
@@ -20,6 +23,9 @@ public class Post {
 
     @Column(name = "created_at")
     private ZonedDateTime createdAt;
+
+    @Column(name = "image_url")
+    private String imageUrl;
 
     public Post() {}
 
