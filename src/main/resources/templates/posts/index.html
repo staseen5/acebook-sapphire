@@ -1,4 +1,14 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/main_layout :: layout(~{::title}, ~{::main})}"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head lang="en">
+    <meta charset="UTF-8"/>
+    <title>Sapphire</title>
+    <link rel="stylesheet" href="/main.css"/>
+</head>
+<body>
+<main>
     <html xmlns:th="http://www.thymeleaf.org"
           xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5" >
     <head lang="en">
@@ -17,15 +27,15 @@
     </div>
 
     <form action="#" th:action="@{/posts}" th:object="${post}" method="post">
-        <p>Content: <input type="text" th:field="*{content}" /></p>
-        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
+        <p>Content: <input type="text" th:field="*{content}"/></p>
+        <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
     </form>
 
     <div th:each="post: ${posts}">
         <div th:replace="fragments/post :: post">...</div>
     </div>
     </div>
-    </div>
 
+</main>
     </body>
 </html>
