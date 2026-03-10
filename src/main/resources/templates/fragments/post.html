@@ -23,6 +23,11 @@
         <small th:text="${#temporals.format(post_with_comments.key.createdAt, 'dd MMM yyyy HH:mm')}"></small>
     </div>
 
+    <form action="#" th:action="@{/comments/new}" th:object="${new_comment}" method="post">
+        <input type="hidden" th:value="${post_with_comments.key.id}" th:attr="name='postId'" />
+        <p>Comment: <input type="text" th:attr="name='body'"/> <input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
+    </form>
+
     <ul th:each="comment: ${post_with_comments.value}">
         <li th:text="${comment.body}" />
         <small th:text="${#temporals.format(comment.commentedOn, 'dd MMM yyyy HH:mm')}"/>
