@@ -28,5 +28,4 @@ public class Post {
         this.userId = userId;
         this.createdAt = ZonedDateTime.now();
     }
-
 }
