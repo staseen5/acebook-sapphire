@@ -1,25 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+      th:replace="~{layouts/main_layout :: layout(~{::title}, ~{::main})}">
 <head>
     <meta charset="UTF-8">
-    <title>Profile Page</title>
-    <style>
-        .post-container {
-            border: 1px solid black;
-            padding: 12px;
-            margin-bottom: 12px;
-        }
-    </style>
+    <title>Profile</title>
+    <link rel="stylesheet" href="/main.css"/>
 </head>
 
 <body>
 
-<div id="nav-placeholder" style="height: 100px; background-color: teal">
-    <a href="/posts"><< HOMEPAGE</a>
-</div>
-
-<main style="max-width: 1200px; margin:auto; padding: 12px;">
+<main>
 
     <div id="user-info-container" style="display: flex; align-items: center; padding: 12px; margin-bottom: 12px; gap:12px; border: 1px solid black">
 
