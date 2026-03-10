@@ -3,8 +3,10 @@ package com.makersacademy.acebook.controller;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.makersacademy.acebook.model.Post;
+import com.makersacademy.acebook.model.Comment;
 import com.makersacademy.acebook.model.User;
 import com.makersacademy.acebook.repository.PostRepository;
+import com.makersacademy.acebook.repository.CommentRepository;
 import com.makersacademy.acebook.repository.PostLikeRepository;
 import com.makersacademy.acebook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +36,14 @@ public class PostsController {
     UserRepository userRepository;
 
     @Autowired
+    CommentRepository commentRepository;
+
+    @Autowired
     PostLikeRepository postLikeRepository;
 
     @GetMapping("/")
     public String index(Model model) {
+        HashMap<Post, List<Comment>> postsWithComments = new HashMap<Post, List<Comment>>();
         Iterable<Post> posts = repository.findAllByOrderByCreatedAtDesc();
 
         Map<Long, Long> likeCounts = new HashMap<>();
@@ -45,7 +51,12 @@ public class PostsController {
             likeCounts.put(post.getId(), postLikeRepository.countByIdPostId(post.getId()));
         }
 
-        model.addAttribute("posts", posts);
+        for(Post p: posts) {
+            List<Comment> comments = commentRepository.findByPostId(p.getId());
+            postsWithComments.put(p, comments);
+        }
+
+        model.addAttribute("posts_with_comments", postsWithComments);
         model.addAttribute("post", new Post());
         model.addAttribute("likeCounts", likeCounts);
         return "posts/index";
@@ -72,4 +83,11 @@ public class PostsController {
         repository.save(post);
         return new RedirectView("/");
     }
+
+    @PostMapping("/comments/new")
+    public RedirectView create(@ModelAttribute Comment new_comment) {
+        commentRepository.save(new_comment);
+        return new RedirectView("/posts");
+    }
+ 
 }
