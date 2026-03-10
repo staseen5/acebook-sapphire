@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    ...
+</head>
+<body>
+
+<div class="post-container" th:fragment="post">
+
+    <div id="user-info" class="post-user-info-container">
+        <!-- REPLACE WITH URL FROM DB -->
+        <img
+                class="image-thumbnail"
+                alt="profile-thumbnail"
+                src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg">
+
+        <!-- REPLACE WITH USERS NAME -->
+        <h4 th:text="${post.userId}"></h4>
+    </div>
+
+    <div class="post-content-container">
+        <p th:text="${post.content}"/>
+    </div>
+
+    <small th:text="${#temporals.format(post.createdAt, 'dd MMM yyyy HH:mm')}"></small>
+</div>
+
+</body>
+</html>
