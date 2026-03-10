@@ -64,8 +64,8 @@
 
             <h3>MY POSTS:</h3>
 
-            <div th:each="post: ${posts}">
-                <div th:replace="fragments/post :: post">...</div>
+            <div th:each="post_with_comments: ${posts_with_comments}">
+                <div th:replace="fragments/post :: post_with_comments">...</div>
             </div>
 
         </div>
