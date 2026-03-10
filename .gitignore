@@ -10,4 +10,6 @@ dependency-reduced-pom.xml
 .project
 .settings/
 **/.DS_Store
-/src/main/resources/application.yml
+**/application.yml
+**/application-dev.properties
+**/application-test.properties

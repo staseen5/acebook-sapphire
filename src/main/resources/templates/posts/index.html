@@ -21,6 +21,7 @@
 
     <ul th:each="post: ${posts}">
         <li th:text="${post.content}" />
+<!-- If we want to display time   <small th:text="${#temporals.format(post.createdAt, 'dd MMM yyyy HH:mm')}"></small>-->
     </ul>
 
     </body>
