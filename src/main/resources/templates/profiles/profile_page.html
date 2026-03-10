@@ -64,46 +64,8 @@
 
             <h3>MY POSTS:</h3>
 
-            <div id="post-placeholder-01" class="post-container">
-                <div style="display: flex; align-items: center">
-                    <img style="width: 50px; height: 50px; margin: 6px;"
-                         src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg">
-                    <div>
-                        <h3>User's Name</h3>
-                        <h4>Datetime</h4>
-                    </div>
-                </div>
-                <div style="border: 1px solid grey; padding:6px; margin:6px; border-radius: 6px;">
-                    <p>This is where the post content will be</p>
-                </div>
-            </div>
-
-            <div id="post-placeholder-02" class="post-container">
-                <div style="display: flex; align-items: center">
-                    <img style="width: 50px; height: 50px; margin: 6px;"
-                         src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg">
-                    <div>
-                        <h3>User's Name</h3>
-                        <h4>Datetime</h4>
-                    </div>
-                </div>
-                <div style="border: 1px solid grey; padding:6px; margin:6px; border-radius: 6px;">
-                    <p>This is where the post content will be</p>
-                </div>
-            </div>
-
-            <div id="post-placeholder-03" class="post-container">
-                <div style="display: flex; align-items: center">
-                    <img style="width: 50px; height: 50px; margin: 6px;"
-                         src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg">
-                    <div>
-                        <h3>User's Name</h3>
-                        <h4>Datetime</h4>
-                    </div>
-                </div>
-                <div style="border: 1px solid grey; padding:6px; margin:6px; border-radius: 6px;">
-                    <p>This is where the post content will be</p>
-                </div>
+            <div th:each="post: ${posts}">
+                <div th:replace="fragments/post :: post">...</div>
             </div>
 
         </div>
