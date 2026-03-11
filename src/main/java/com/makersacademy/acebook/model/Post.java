@@ -28,9 +28,6 @@ public class Post {
 
     @Column(name = "created_at")
     private ZonedDateTime createdAt;
-
-    @OneToMany(mappedBy="post")
-    private List<Comment> comments;
   
     @Column(name = "image_url")
     private String imageUrl;
