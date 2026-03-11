@@ -24,7 +24,7 @@
     </div>
 
     <form th:action="@{/comments/new}" method="post">
-        <input type="hidden" name="postId" th:value="${post_with_comments.key.getId()}" />
+        <input type="hidden" name="postId" th:value="${post_with_comments.key.id}" />
         <p>
             Comment: 
             <input type="text" name="body" />
@@ -35,7 +35,7 @@
     
     <ul th:each="comment: ${post_with_comments.value}">
         <!-- Replace comment.userId with however we're mapping from userId to username -->
-        <li th:text="${comment.userId + ': ' + comment.body}" />
+        <li th:text="${comment.getUser().getUsername() + ': ' + comment.body}" />
         <small th:text="${#temporals.format(comment.commentedOn, 'dd MMM yyyy HH:mm')}"/>
     </ul>
 

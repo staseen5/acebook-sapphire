@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.security.Principal;
 import java.time.ZonedDateTime;
 import java.util.Map;
+import java.util.Optional;
 import java.util.HashMap;
 
 import java.util.List;
@@ -91,15 +92,18 @@ public class PostsController {
     }
 
     @PostMapping("/comments/new")
-    public RedirectView create(@ModelAttribute Comment new_comment, Principal principal) throws IOException {
+    public RedirectView create(@ModelAttribute Comment new_comment, @RequestParam("postId") Long postId, Principal principal) throws IOException {
         new_comment.setCommentedOn(ZonedDateTime.now());
 
         OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
         String email = token.getPrincipal().getAttribute("email");
         // This will need to be changed if we use username instead of email
         User user = userRepository.findByUsername(email);
-        new_comment.setUserId(user.getId());
+        new_comment.setUser(user);
 
+        Post post = repository.findById(postId)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid post id: " + postId));
+        new_comment.setPost(post);
 
         commentRepository.save(new_comment);
         return new RedirectView("/posts");
