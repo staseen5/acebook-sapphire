@@ -44,7 +44,7 @@ public class PostsController {
     @Autowired
     PostLikeRepository postLikeRepository;
 
-    @GetMapping("/posts")
+    @GetMapping("/")
     public String index(Model model) {
         // Get all posts in descending order
         Iterable<Post> posts = repository.findAllByOrderByCreatedAtDesc();
@@ -63,7 +63,7 @@ public class PostsController {
         return "posts/index";
     }
 
-    @PostMapping("/posts")
+    @PostMapping("/")
     public RedirectView create(@ModelAttribute Post post,
                                @RequestParam("file") MultipartFile file,
                                Principal principal) throws IOException {
@@ -82,7 +82,7 @@ public class PostsController {
 
         post.setCreatedAt(ZonedDateTime.now());
         repository.save(post);
-        return new RedirectView("/posts");
+        return new RedirectView("/");
     }
 
     @PostMapping("/comments/new")
@@ -105,6 +105,6 @@ public class PostsController {
         }
 
         commentRepository.save(new_comment);
-        return new RedirectView("/posts");
+        return new RedirectView("/");
     }
 }

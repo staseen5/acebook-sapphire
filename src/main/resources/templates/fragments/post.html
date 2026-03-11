@@ -20,13 +20,19 @@
 
     <div class="post-content-container">
         <p th:text="${post.content}"/>
-        <small th:text="${#temporals.format(post.createdAt, 'dd MMM yyyy HH:mm')}"></small>
+        <div class="post-footer">
+            <small th:text="${#temporals.format(post.createdAt, 'dd MMM yyyy HH:mm')}"></small>
+            <div class="post-likes-container">
+                <img th:src="@{/images/heart.png}" alt="like" width="16" height="16">
+                <small th:text="${likeCounts[post.id]} + ' likes'"></small>
+            </div>
+        </div>
     </div>
 
     <form th:action="@{/comments/new}" method="post">
         <input type="hidden" name="postId" th:value="${post.id}" />
         <p>
-            Comment: 
+            Comment:
             <input type="text" name="body" />
             <input type="reset" value="Reset"/>
             <input type="submit" value="Submit"/>
