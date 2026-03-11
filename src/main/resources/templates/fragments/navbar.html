@@ -1,8 +1,5 @@
 <nav th:fragment="navbar" class="navbar">
-  <div class="navbar-user"
-       th:if="${#authentication != null}">
-    <span th:text="${#authentication.principal.attributes['email']}"></span>
-  </div>
+  <img th:src="@{/images/logoipsum-415.svg}" alt="sapphire-logo">
   <a th:href="@{/profile/{username}(username=${#authentication.principal.attributes['email']})}">
     Profile</a>
   <a th:href="@{/}">Home</a>

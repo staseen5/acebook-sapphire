@@ -14,12 +14,11 @@
                 alt="profile-thumbnail"
                 src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg">
 
-        <!-- REPLACE WITH USERS NAME -->
         <a th:href="@{/profile/{username}(username=${post.user.username})}"><h4 th:text="${post.user.username}"></h4></a>
     </div>
 
     <div class="post-content-container">
-        <p th:text="${post.content}"/>
+        <p class="post-content-text" th:text="${post.content}"/>
         <div class="post-img-parent">
             <img th:if="${post.imageUrl != null}"
                  th:src="${post.imageUrl}"
