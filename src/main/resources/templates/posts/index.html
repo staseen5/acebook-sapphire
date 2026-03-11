@@ -15,8 +15,8 @@
         Signed in as <span sec:authentication="principal.attributes['email']"></span>
     </div>
 
-    <div th:each="post_with_comments: ${posts_with_comments}">
-        <div th:replace="fragments/post :: post_with_comments">...</div>
+    <div th:each="post : ${posts}">
+        <div th:replace="fragments/post :: postFragment (${post}, ${commentsByPostId})"></div>
     </div>
 </main>
 </body>

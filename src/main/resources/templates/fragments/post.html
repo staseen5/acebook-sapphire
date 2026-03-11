@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<div class="post-container" th:fragment="post_with_comments">
+<div class="post-container" th:fragment="postFragment (post, commentsByPostId)">
 
     <div id="user-info" class="post-user-info-container">
         <!-- REPLACE WITH URL FROM DB -->
@@ -15,16 +15,16 @@
                 src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg">
 
         <!-- REPLACE WITH USERS NAME -->
-        <a th:href="@{/profile/{username}(username=${post_with_comments.key.user.username})}"><h4 th:text="${post_with_comments.key.user.username}"></h4></a>
+        <a th:href="@{/profile/{username}(username=${post.user.username})}"><h4 th:text="${post.user.username}"></h4></a>
     </div>
 
     <div class="post-content-container">
-        <p th:text="${post_with_comments.key.content}"/>
-        <small th:text="${#temporals.format(post_with_comments.key.createdAt, 'dd MMM yyyy HH:mm')}"></small>
+        <p th:text="${post.content}"/>
+        <small th:text="${#temporals.format(post.createdAt, 'dd MMM yyyy HH:mm')}"></small>
     </div>
 
     <form th:action="@{/comments/new}" method="post">
-        <input type="hidden" name="postId" th:value="${post_with_comments.key.id}" />
+        <input type="hidden" name="postId" th:value="${post.id}" />
         <p>
             Comment: 
             <input type="text" name="body" />
@@ -33,7 +33,7 @@
         </p>
     </form>
     
-    <ul th:each="comment: ${post_with_comments.value}">
+    <ul th:each="comment: ${commentsByPostId[post.id]}">
         <!-- Replace comment.userId with however we're mapping from userId to username -->
         <li th:text="${comment.getUser().getUsername() + ': ' + comment.body}" />
         <small th:text="${#temporals.format(comment.commentedOn, 'dd MMM yyyy HH:mm')}"/>

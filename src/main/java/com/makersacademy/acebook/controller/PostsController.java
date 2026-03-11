@@ -49,13 +49,14 @@ public class PostsController {
         // Get all posts in descending order
         Iterable<Post> posts = repository.findAllByOrderByCreatedAtDesc();
 
-        // Create hash of posts : list of their comments
-        HashMap<Post, List<Comment>> postsWithComments = new HashMap<Post, List<Comment>>();
-        for(Post p: posts) {
-            List<Comment> comments = commentRepository.findByPostId(p.getId());
-            postsWithComments.put(p, comments);
+        model.addAttribute("posts", posts);
+
+        Map<Long, List<Comment>> commentsByPostId = new HashMap<>();
+        for (Post p : posts) {
+            commentsByPostId.put(p.getId(), commentRepository.findByPostId(p.getId()));
         }
-        model.addAttribute("posts_with_comments", postsWithComments);
+
+        model.addAttribute("commentsByPostId", commentsByPostId);
 
         // Create hash of post id : amount of likes
         Map<Long, Long> likeCounts = new HashMap<>();
