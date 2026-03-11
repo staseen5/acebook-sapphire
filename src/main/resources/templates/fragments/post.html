@@ -19,12 +19,12 @@
     </div>
 
     <div class="post-content-container">
-        <p th:text="${post_with_comments.key.content}"/>
+        <p th:text="${post.content}"/>
         <div class="post-footer">
-            <small th:text="${#temporals.format(post_with_comments.key.createdAt, 'dd MMM yyyy HH:mm')}"></small>
+            <small th:text="${#temporals.format(post.createdAt, 'dd MMM yyyy HH:mm')}"></small>
             <div class="post-likes-container">
                 <img th:src="@{/images/heart.png}" alt="like" width="16" height="16">
-                <small th:text="${likeCounts[post_with_comments.key.id]} + ' likes'"></small>
+                <small th:text="${likeCounts[post.id]} + ' likes'"></small>
             </div>
         </div>
     </div>
