@@ -1,7 +1,55 @@
+:root {
+    --page-bg-color: #ffffff;
+    --primary-bg-color-top: #1540a3;
+    --primary-bg-color-bottom: #0094f7;
+    --primary-border-color: #0094f7;
+    --logo-color: #0094f7;
+}
+
+* {
+    box-sizing: border-box;
+}
+
 html, body {
+    background-image: linear-gradient(to bottom, var(--primary-bg-color-top), var(--primary-bg-color-bottom));
     margin: 0;
     padding: 0;
 }
+
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    height: 90px;
+
+    font-family: monospace;
+    color: white;
+
+    background-color: transparent;
+}
+
+header div {
+    flex: 1;
+}
+header div:nth-of-type(2) {
+    flex: 2;
+}
+header div:nth-of-type(3) {
+    display: flex;
+    justify-content: end;
+}
+
+header input {
+    height: 40px;
+    width: 100%;
+    padding: 12px;
+    border-radius: 20px;
+    border: 2px solid var(--primary-border-color);
+}
+
 
 main {
     margin: 0 auto 0 auto;
@@ -13,7 +61,10 @@ main {
 
 footer {
     height: 60px;
-    background-color: lightslategrey;
+    padding: 20px;
+
+    color: white;
+    background-color: transparent;
 }
 
 /* Images */
@@ -32,11 +83,13 @@ footer {
     margin-left: auto;
     margin-right: auto;
 }
+
 .post-user-info-container {
     display: flex;
     align-items: center;
     gap: 12px;
 }
+
 .post-content-container {
     border: 1px solid black;
     border-radius: 8px;
@@ -54,24 +107,24 @@ footer {
     justify-content: space-between;
     align-items: center;
 }
+
 /* Navbar */
 .navbar {
-        background-color: #1540a3;
-        padding: 20px;
-        font-family: monospace;
-        color: white;
+    background-color: transparent;
+    padding: 20px;
+    font-family: monospace;
+    color: white;
 
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 200px;
-        height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 200px;
 
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        box-sizing: border-box;
-    }
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
 
 .navbar a {
     color: white;
@@ -83,7 +136,13 @@ footer {
     text-decoration: underline;
 }
 
+.navbar img {
+    height: 50px;
+    width: 50px;
+}
+
 .content {
+    background-color: var(--page-bg-color);
     margin-left: 200px;
     padding: 10px;
 }

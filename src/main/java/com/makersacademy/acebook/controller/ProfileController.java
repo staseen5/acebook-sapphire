@@ -37,19 +37,9 @@ public class ProfileController {
         Optional<User> currentUser = userRepository.findUserByUsername(username);
         profilePage.addObject("user", currentUser.get());
 
-        List<Post> userPosts = postRepository.findPostsByUserId(currentUser.get().getId());
-
-        // Create hash of posts : list of their comments
-        HashMap<Post, List<Comment>> userPostsWithComments = new HashMap<Post, List<Comment>>();
-        for(Post p: userPosts) {
-            List<Comment> comments = commentRepository.findByPostId(p.getId());
-            userPostsWithComments.put(p, comments);
-        }
-        profilePage.addObject("posts_with_comments", userPostsWithComments);
-
         // Create hash of post id : amount of likes
         Map<Long, Long> likeCounts = new HashMap<>();
-        for (Post post : userPosts) {
+        for (Post post : currentUser.get().getPosts()) {
             likeCounts.put(post.getId(), postLikeRepository.countByIdPostId(post.getId()));
         }
         profilePage.addObject("likeCounts", likeCounts);

@@ -37,8 +37,8 @@
     </form>
     <script src="/scripts/image-preview.js"></script>
 
-    <div class="post-wrapper" th:each="post: ${posts}">
-        <div th:replace="~{fragments/post :: postFragment(${post}, ${commentsByPostId})}">...</div>
+    <div class="post-wrapper" th:each="post : ${posts}">
+        <div th:replace="fragments/post :: post"></div>
     </div>
 </main>
 </body>
