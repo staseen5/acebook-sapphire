@@ -22,8 +22,9 @@ public class Post {
     private Long id;
     private String content;
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Column(name = "created_at")
     private ZonedDateTime createdAt;
@@ -36,9 +37,9 @@ public class Post {
 
     public Post() {}
 
-    public Post(String content, Long userId) {
+    public Post(String content, User user) {
         this.content = content;
-        this.userId = userId;
+        this.user = user;
         this.createdAt = ZonedDateTime.now();
     }
 }

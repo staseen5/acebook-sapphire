@@ -74,7 +74,7 @@ public class PostsController {
 
         if (principal != null) {
             User user = userRepository.findByUsername(principal.getName());
-            post.setUserId(user.getId());
+            post.setUser(user);
         }
 
         if(!file.isEmpty()){
