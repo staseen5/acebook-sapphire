@@ -14,8 +14,11 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String username;
     private boolean enabled;
+    private String email;
+    private String username;
+    private String firstName;
+    private String lastName;
 
     @OneToMany(mappedBy = "user")
     private List<Post> posts;
@@ -27,13 +30,13 @@ public class User {
         this.enabled = TRUE;
     }
 
-    public User(String username) {
-        this.username = username;
+    public User(String email) {
+        this.email = email;
         this.enabled = TRUE;
     }
 
-    public User(String username, boolean enabled) {
-        this.username = username;
+    public User(String email, boolean enabled) {
+        this.email = email;
         this.enabled = enabled;
     }
 }

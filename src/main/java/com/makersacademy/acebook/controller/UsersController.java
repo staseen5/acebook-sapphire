@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
@@ -20,11 +21,38 @@ public class UsersController {
                 .getAuthentication()
                 .getPrincipal();
 
-        String username = (String) principal.getAttributes().get("email");
-        userRepository
-                .findUserByUsername(username)
-                .orElseGet(() -> userRepository.save(new User(username)));
+        String email = (String) principal.getAttributes().get("email");
+        User user = userRepository
+                .findUserByEmail(email)
+                .orElseGet(() -> userRepository.save(new User(email)));
+        
+        if (user.getFirstName() == null || user.getFirstName().isEmpty()) {
+            return new RedirectView("/users/setup");
+        }
 
+        return new RedirectView("/");
+    }
+
+    @GetMapping("/users/setup")
+    public ModelAndView setup() {
+        ModelAndView setupPage = new ModelAndView("users/setup");
+        return setupPage;
+    }
+
+    @PostMapping("/users/setup")
+    public RedirectView saveProfile(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String username) {
+        DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        String email = (String) principal.getAttributes().get("email");
+        User user = userRepository.findByEmail(email);
+
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setUsername(username);
+        userRepository.save(user);
         return new RedirectView("/");
     }
 }
