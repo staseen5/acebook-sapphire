@@ -4,8 +4,8 @@
   </div>
 
   <div class="header-searchbar-container">
-    <form>
-      <input type="text" placeholder="search posts...">
+    <form th:action="@{/search}" method="get" style="display: flex">
+      <input type="text" name="keyword" placeholder="search posts..." />
     </form>
   </div>
 

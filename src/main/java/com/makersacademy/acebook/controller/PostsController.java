@@ -63,6 +63,23 @@ public class PostsController {
         return "posts/index";
     }
 
+    @GetMapping("/search")
+    public String searchPosts(@RequestParam String keyword, Model model) {
+        List<Post> filteredPosts = repository.findPostsByContentContainsIgnoreCase(keyword);
+        model.addAttribute("posts", filteredPosts);
+
+        // Create hash of post id : amount of likes
+        Map<Long, Long> likeCounts = new HashMap<>();
+        for (Post post : filteredPosts) {
+            likeCounts.put(post.getId(), postLikeRepository.countByIdPostId(post.getId()));
+        }
+        model.addAttribute("likeCounts", likeCounts);
+
+        model.addAttribute("post", new Post());
+
+        return "posts/index";
+    }
+
     @PostMapping("/")
     public RedirectView create(@ModelAttribute Post post,
                                @RequestParam("file") MultipartFile file,
