@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<div class="post-container" th:fragment="postFragment (post, commentsByPostId)">
+<div class="post-container" th:fragment="post">
 
     <div id="user-info" class="post-user-info-container">
         <!-- REPLACE WITH URL FROM DB -->
@@ -43,8 +43,8 @@
             <input type="submit" value="Submit"/>
         </p>
     </form>
-
-    <ul th:each="comment: ${commentsByPostId[post.id]}">
+    
+    <ul th:each="comment: ${post.getComments()}">
         <!-- Replace comment.userId with however we're mapping from userId to username -->
         <li th:text="${comment.getUser().getUsername() + ': ' + comment.body}" />
         <small th:text="${#temporals.format(comment.commentedOn, 'dd MMM yyyy HH:mm')}"/>

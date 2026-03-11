@@ -15,13 +15,13 @@
         Signed in as <span sec:authentication="principal.attributes['email']"></span>
     </div>
 
-    <form action="#" th:action="@{/posts}" th:object="${post}" method="post">
+    <form action="#" th:action="@{/}" th:object="${post}" method="post">
         <p>Content: <input type="text" th:field="*{content}"/></p>
         <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
     </form>
 
-    <div class="post-wrapper" th:each="post: ${posts}">
-        <div th:replace="~{fragments/post :: postFragment(${post}, ${commentsByPostId})}">...</div>
+    <div class="post-wrapper" th:each="post : ${posts}">
+        <div th:replace="fragments/post :: post"></div>
     </div>
 </main>
 </body>

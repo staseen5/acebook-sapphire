@@ -32,6 +32,9 @@ public class Post {
     @Column(name = "image_url")
     private String imageUrl;
 
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comments;
+
     public Post() {}
 
     public Post(String content, User user) {

@@ -51,13 +51,6 @@ public class PostsController {
 
         model.addAttribute("posts", posts);
 
-        Map<Long, List<Comment>> commentsByPostId = new HashMap<>();
-        for (Post p : posts) {
-            commentsByPostId.put(p.getId(), commentRepository.findByPostId(p.getId()));
-        }
-
-        model.addAttribute("commentsByPostId", commentsByPostId);
-
         // Create hash of post id : amount of likes
         Map<Long, Long> likeCounts = new HashMap<>();
         for (Post post : posts) {
@@ -108,7 +101,7 @@ public class PostsController {
         new_comment.setPost(post);
 
         if (new_comment.getBody() == null || new_comment.getBody().trim().isEmpty()) {
-            return new RedirectView("/posts");
+            return new RedirectView("/");
         }
 
         commentRepository.save(new_comment);
