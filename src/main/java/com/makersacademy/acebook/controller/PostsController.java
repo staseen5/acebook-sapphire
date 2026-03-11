@@ -94,6 +94,7 @@ public class PostsController {
 
     @PostMapping("/comments/new")
     public RedirectView create(@ModelAttribute Comment new_comment, @RequestParam("postId") Long postId, Principal principal) throws IOException {
+
         new_comment.setCommentedOn(ZonedDateTime.now());
 
         OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
@@ -105,6 +106,10 @@ public class PostsController {
         Post post = repository.findById(postId)
             .orElseThrow(() -> new IllegalArgumentException("Invalid post id: " + postId));
         new_comment.setPost(post);
+
+        if (new_comment.getBody() == null || new_comment.getBody().trim().isEmpty()) {
+            return new RedirectView("/posts");
+        }
 
         commentRepository.save(new_comment);
         return new RedirectView("/posts");
