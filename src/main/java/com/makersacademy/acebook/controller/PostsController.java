@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.security.Principal;
 import java.time.ZonedDateTime;
 import java.util.Map;
+import java.util.Optional;
 import java.util.HashMap;
 
 import java.util.List;
@@ -48,13 +49,14 @@ public class PostsController {
         // Get all posts in descending order
         Iterable<Post> posts = repository.findAllByOrderByCreatedAtDesc();
 
-        // Create hash of posts : list of their comments
-        HashMap<Post, List<Comment>> postsWithComments = new HashMap<Post, List<Comment>>();
-        for(Post p: posts) {
-            List<Comment> comments = commentRepository.findByPostId(p.getId());
-            postsWithComments.put(p, comments);
+        model.addAttribute("posts", posts);
+
+        Map<Long, List<Comment>> commentsByPostId = new HashMap<>();
+        for (Post p : posts) {
+            commentsByPostId.put(p.getId(), commentRepository.findByPostId(p.getId()));
         }
-        model.addAttribute("posts_with_comments", postsWithComments);
+
+        model.addAttribute("commentsByPostId", commentsByPostId);
 
         // Create hash of post id : amount of likes
         Map<Long, Long> likeCounts = new HashMap<>();
@@ -91,15 +93,23 @@ public class PostsController {
     }
 
     @PostMapping("/comments/new")
-    public RedirectView create(@ModelAttribute Comment new_comment, Principal principal) throws IOException {
+    public RedirectView create(@ModelAttribute Comment new_comment, @RequestParam("postId") Long postId, Principal principal) throws IOException {
+
         new_comment.setCommentedOn(ZonedDateTime.now());
 
         OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
         String email = token.getPrincipal().getAttribute("email");
         // This will need to be changed if we use username instead of email
         User user = userRepository.findByUsername(email);
-        new_comment.setUserId(user.getId());
+        new_comment.setUser(user);
 
+        Post post = repository.findById(postId)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid post id: " + postId));
+        new_comment.setPost(post);
+
+        if (new_comment.getBody() == null || new_comment.getBody().trim().isEmpty()) {
+            return new RedirectView("/posts");
+        }
 
         commentRepository.save(new_comment);
         return new RedirectView("/posts");

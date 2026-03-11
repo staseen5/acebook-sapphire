@@ -18,21 +18,23 @@ public class Comment {
     private Long id;
     private String body;
 
-    @Column(name="user_id")
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
 
-    @Column(name="post_id")
-    private Long postId;
+    @ManyToOne
+    @JoinColumn(name="post_id")
+    private Post post;
 
     @Column(name = "commented_on")
     private ZonedDateTime commentedOn;
 
     public Comment() {}
 
-    public Comment(String body, Long userId, Long postId) {
+    public Comment(String body, User user, Post post) {
         this.body = body;
-        this.userId = userId;
-        this.postId = postId;
+        this.user = user;
+        this.post = post;
         this.commentedOn = ZonedDateTime.now();
     }
 }
