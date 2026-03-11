@@ -1,5 +1,6 @@
-body {
+html, body {
     margin: 0;
+    padding: 0;
 }
 
 main {
@@ -23,9 +24,13 @@ footer {
 
 /* Post Fragment */
 .post-container {
-    border: 1px solid black;
+    border: 2px solid black;
+    border-radius: 12px;
     padding: 12px;
     margin-bottom: 6px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 .post-user-info-container {
     display: flex;
@@ -34,9 +39,54 @@ footer {
 }
 .post-content-container {
     border: 1px solid black;
+    border-radius: 8px;
     padding: 12px;
 }
 
+.post-likes-container {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.post-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+/* Navbar */
+.navbar {
+        background-color: #1540a3;
+        padding: 20px;
+        font-family: monospace;
+        color: white;
+
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 200px;
+        height: 100vh;
+
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        box-sizing: border-box;
+    }
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+}
+
+.content {
+    margin-left: 200px;
+    padding: 10px;
+}
 
 
 /* From Original Repo */
@@ -51,12 +101,22 @@ footer {
     margin-bottom: 0.5rem;;
 }
 
-.parent {
-    width: 100px;
+.post-img-parent {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 12px;
+    margin-top: 8px;
+    margin-bottom: 8px;
 }
 
-img {
-    display: block;
+.post-img-parent img {
     width: 100%;
-    height: auto;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+}
+
+.post-wrapper {
+    margin-bottom: 16px;
 }

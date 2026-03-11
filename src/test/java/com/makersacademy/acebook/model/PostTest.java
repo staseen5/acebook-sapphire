@@ -6,12 +6,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import org.junit.jupiter.api.Test;
 
 public class PostTest {
-
-	private Post post = new Post("hello", 1L);
+	private User testUser = new User("Test User");
+	private Post post = new Post("hello", testUser);
 
 	@Test
 	public void postHasContent() {
 		assertThat(post.getContent(), containsString("hello"));
 	}
-
 }
