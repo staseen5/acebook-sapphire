@@ -34,12 +34,12 @@ public class ProfileController {
     public ModelAndView getProfile(@PathVariable String username) {
         ModelAndView profilePage = new ModelAndView("profiles/profile_page");
 
-        Optional<User> currentUser = userRepository.findUserByUsername(username);
-        profilePage.addObject("user", currentUser.get());
+        User currentUser = userRepository.findByUsername(username);
+        profilePage.addObject("user", currentUser);
 
         // Create hash of post id : amount of likes
         Map<Long, Long> likeCounts = new HashMap<>();
-        for (Post post : currentUser.get().getPosts()) {
+        for (Post post : currentUser.getPosts()) {
             likeCounts.put(post.getId(), postLikeRepository.countByIdPostId(post.getId()));
         }
         profilePage.addObject("likeCounts", likeCounts);

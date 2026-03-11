@@ -69,7 +69,9 @@ public class PostsController {
                                Principal principal) throws IOException {
 
         if (principal != null) {
-            User user = userRepository.findByUsername(principal.getName());
+            OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
+            String email = token.getPrincipal().getAttribute("email");
+            User user = userRepository.findByEmail(email);
             post.setUser(user);
         }
 
@@ -93,7 +95,7 @@ public class PostsController {
         OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
         String email = token.getPrincipal().getAttribute("email");
         // This will need to be changed if we use username instead of email
-        User user = userRepository.findByUsername(email);
+        User user = userRepository.findByEmail(email);
         new_comment.setUser(user);
 
         Post post = repository.findById(postId)
