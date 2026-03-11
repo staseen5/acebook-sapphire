@@ -182,7 +182,7 @@ footer {
     margin-bottom: 16px;
 }
 
-/* Add Profile Picture */
+/* Profile Picture */
 .profile-picture-div {
     display: flex;
     justify-content: center;
@@ -197,8 +197,8 @@ footer {
 }
 .profile-picture-div img {
     object-fit: cover;
-    height: 100%;
-    width: 100%;
+    width: 150px;
+    height: 150px;
 }
 
 /* Create Profile */

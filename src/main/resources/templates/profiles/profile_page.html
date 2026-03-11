@@ -11,11 +11,14 @@
 
 <main>
 
-    <div id="user-info-container" style="display: flex; align-items: center; padding: 12px; margin-bottom: 12px; gap:12px; border: 1px solid black">
+    <div id="user-info-container"
+         style="display: flex; align-items: center; padding: 12px; margin-bottom: 12px; gap:12px; border: 1px solid black">
 
-        <img class="profile-picture-button"
-             alt="profile-picture"
-             src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg">
+        <div class="profile-picture-div">
+            <img class="profile-picture"
+                 th:alt="${user.getProfilePictureUrl()}"
+                 th:src="${user.getProfilePictureUrl()}"/>
+        </div>
 
         <div id="user-infor-text" style="flex: 1;">
 

@@ -12,7 +12,7 @@
         <img
                 class="image-thumbnail"
                 alt="profile-thumbnail"
-                src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg">
+                th:src="${post.user.getProfilePictureUrl()}">
 
         <a th:href="@{/profile/{username}(username=${post.user.username})}"><h4 th:text="${post.user.username}"></h4></a>
     </div>
@@ -33,6 +33,7 @@
             </div>
         </div>
     </div>
+
     <form th:action="@{/comments/new}" method="post">
         <input type="hidden" name="postId" th:value="${post.id}" />
         <p>

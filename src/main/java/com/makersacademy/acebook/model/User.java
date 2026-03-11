@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Objects;
 
 import static java.lang.Boolean.TRUE;
 
@@ -39,5 +40,9 @@ public class User {
     public User(String email, boolean enabled) {
         this.email = email;
         this.enabled = enabled;
+    }
+
+    public String getProfilePictureUrl() {
+        return Objects.requireNonNullElse(this.profilePictureUrl, "https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg");
     }
 }
