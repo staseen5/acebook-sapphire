@@ -20,7 +20,7 @@
         <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
     </form>
 
-    <div th:each="post : ${posts}">
+    <div class="post-wrapper" th:each="post : ${posts}">
         <div th:replace="fragments/post :: post"></div>
     </div>
 </main>
