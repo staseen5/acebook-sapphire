@@ -50,3 +50,13 @@ footer {
     text-align: left;
     margin-bottom: 0.5rem;;
 }
+
+.parent {
+    width: 100px;
+}
+
+img {
+    display: block;
+    width: 100%;
+    height: auto;
+}

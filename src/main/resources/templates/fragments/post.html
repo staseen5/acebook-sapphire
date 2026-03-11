@@ -20,6 +20,13 @@
 
     <div class="post-content-container">
         <p th:text="${post_with_comments.key.content}"/>
+        <div class="post-img-parent">
+            <img th:if="${post_with_comments.key.imageUrl != null}"
+                 th:src="${post_with_comments.key.imageUrl}"
+                 alt="Post image"
+                 height="300"
+                 width="300"/>
+        </div>
         <small th:text="${#temporals.format(post_with_comments.key.createdAt, 'dd MMM yyyy HH:mm')}"></small>
     </div>
 
