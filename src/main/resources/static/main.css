@@ -213,6 +213,10 @@ main {
     margin-bottom: 6px;
 }
 
+.post-form {
+    margin-bottom: 6px;
+}
+
 .post-form textarea {
     width: 100%;
     border-radius: 8px;
