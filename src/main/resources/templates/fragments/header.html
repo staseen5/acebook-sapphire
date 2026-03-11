@@ -1,0 +1,17 @@
+<header th:fragment="header">
+
+  <div>
+  </div>
+
+  <div class="header-searchbar-container">
+    <form>
+      <input type="text" placeholder="search posts...">
+    </form>
+  </div>
+
+
+  <div th:if="${#authentication != null}">
+    <span th:text="${#authentication.principal.attributes['email']}"></span>
+  </div>
+
+</header>
