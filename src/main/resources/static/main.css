@@ -34,9 +34,11 @@ header {
 header div {
     flex: 1;
 }
+
 header div:nth-of-type(2) {
     flex: 2;
 }
+
 header div:nth-of-type(3) {
     display: flex;
     justify-content: end;
@@ -50,21 +52,12 @@ header input {
     border: 2px solid var(--primary-border-color);
 }
 
-
 main {
     margin: 0 auto 0 auto;
     padding: 12px;
     max-width: 1000px;
 
     min-height: 100vh;
-}
-
-footer {
-    height: 60px;
-    padding: 20px;
-
-    color: white;
-    background-color: transparent;
 }
 
 /* Images */
@@ -214,7 +207,8 @@ footer {
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
-  
+}
+
 .post-form {
     margin-bottom: 6px;
 }
