@@ -123,10 +123,17 @@ main {
     color: white;
     text-decoration: none;
     font-size: 20px;
+    padding: 7px 0;
 }
 
 .navbar a:hover {
     text-decoration: underline;
+}
+
+.navbar-user {
+    font-size: 20px;
+    margin-bottom: 30px;
+    word-break: break-word;
 }
 
 .navbar img {
