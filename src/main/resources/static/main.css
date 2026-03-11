@@ -180,6 +180,41 @@ footer {
     margin-bottom: 16px;
 }
 
+.create-profile-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+.create-profile-form-div {
+    margin: 8px;
+}
+
+.create-profile-input {
+    width: 100%;
+}
+
+.create-profile-button-div {
+    display: flex;
+    margin: 8px;
+    justify-content: flex-end;
+}
+
+.create-profile-button {
+    margin-top: 8px;
+}
+
+.form-container {
+    border: 2px solid black;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 6px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  
 .post-form {
     margin-bottom: 6px;
 }
