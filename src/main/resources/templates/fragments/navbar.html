@@ -1,0 +1,14 @@
+<nav th:fragment="navbar" class="navbar">
+  <div class="navbar-user"
+       th:if="${#authentication != null}">
+    <span th:text="${#authentication.principal.attributes['email']}"></span>
+  </div>
+  <a th:href="@{/profile/{username}(username=${#authentication.principal.attributes['email']})}">
+    Profile</a>
+  <a th:href="@{/posts}">Home</a>
+  <a th:href="@{/posts}">Events</a>
+  <a th:href="@{/posts}">Games</a>
+  <a th:href="@{/posts}">Mysterious Page</a>
+  <a th:href="@{/posts}">Secrets</a>
+
+</nav>

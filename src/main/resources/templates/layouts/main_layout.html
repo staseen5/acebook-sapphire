@@ -11,13 +11,11 @@
 </head>
 
 <body>
-
-<!-- ADD NAVBAR ONCE COMPLETE -->
-<!--<nav th:replace="fragments/navbar :: navbar">...</nav>-->
-
+<div th:replace="fragments/navbar :: navbar"></div>
 <div style="background-color: lightslategrey; display: flex; justify-content: center; align-items: center; height:100px;">
-  <h1>THIS IS A PLACEHOLDER - REPLACE WITH NAVBAR</h1>
-</div>
+  <h1>THIS IS A PLACEHOLDER - REPLACE WITH NAVBAR</h1></div>
+
+  <div class="content">
 
 <main id="main-part" th:replace="${main}">
   <p><em>This content must not be visible.</em></p>
@@ -26,6 +24,7 @@
 <footer th:fragment="footer">
   &copy; 2026 Footer
 </footer>
-
+  </div>
+</div>
 </body>
 </html>

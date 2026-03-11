@@ -10,16 +10,19 @@ import com.makersacademy.acebook.repository.CommentRepository;
 import com.makersacademy.acebook.repository.PostLikeRepository;
 import com.makersacademy.acebook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
 import java.security.Principal;
 import java.time.ZonedDateTime;
 import java.util.Map;
+import java.util.Optional;
 import java.util.HashMap;
 
 import java.util.List;
@@ -43,22 +46,27 @@ public class PostsController {
 
     @GetMapping("/")
     public String index(Model model) {
-        HashMap<Post, List<Comment>> postsWithComments = new HashMap<Post, List<Comment>>();
+        // Get all posts in descending order
         Iterable<Post> posts = repository.findAllByOrderByCreatedAtDesc();
 
+        model.addAttribute("posts", posts);
+
+        Map<Long, List<Comment>> commentsByPostId = new HashMap<>();
+        for (Post p : posts) {
+            commentsByPostId.put(p.getId(), commentRepository.findByPostId(p.getId()));
+        }
+
+        model.addAttribute("commentsByPostId", commentsByPostId);
+
+        // Create hash of post id : amount of likes
         Map<Long, Long> likeCounts = new HashMap<>();
         for (Post post : posts) {
             likeCounts.put(post.getId(), postLikeRepository.countByIdPostId(post.getId()));
         }
-
-        for(Post p: posts) {
-            List<Comment> comments = commentRepository.findByPostId(p.getId());
-            postsWithComments.put(p, comments);
-        }
-
-        model.addAttribute("posts_with_comments", postsWithComments);
-        model.addAttribute("post", new Post());
         model.addAttribute("likeCounts", likeCounts);
+
+        model.addAttribute("post", new Post());
+
         return "posts/index";
     }
 
@@ -69,7 +77,7 @@ public class PostsController {
 
         if (principal != null) {
             User user = userRepository.findByUsername(principal.getName());
-            post.setUserId(user.getId());
+            post.setUser(user);
         }
 
         if(!file.isEmpty()){
@@ -85,9 +93,25 @@ public class PostsController {
     }
 
     @PostMapping("/comments/new")
-    public RedirectView create(@ModelAttribute Comment new_comment) {
+    public RedirectView create(@ModelAttribute Comment new_comment, @RequestParam("postId") Long postId, Principal principal) throws IOException {
+
+        new_comment.setCommentedOn(ZonedDateTime.now());
+
+        OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
+        String email = token.getPrincipal().getAttribute("email");
+        // This will need to be changed if we use username instead of email
+        User user = userRepository.findByUsername(email);
+        new_comment.setUser(user);
+
+        Post post = repository.findById(postId)
+            .orElseThrow(() -> new IllegalArgumentException("Invalid post id: " + postId));
+        new_comment.setPost(post);
+
+        if (new_comment.getBody() == null || new_comment.getBody().trim().isEmpty()) {
+            return new RedirectView("/posts");
+        }
+
         commentRepository.save(new_comment);
         return new RedirectView("/");
     }
- 
 }

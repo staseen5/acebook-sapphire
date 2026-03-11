@@ -1,5 +1,6 @@
-body {
+html, body {
     margin: 0;
+    padding: 0;
 }
 
 main {
@@ -52,6 +53,39 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+/* Navbar */
+.navbar {
+        background-color: #1540a3;
+        padding: 20px;
+        font-family: monospace;
+        color: white;
+
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 200px;
+        height: 100vh;
+
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        box-sizing: border-box;
+    }
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+.navbar a:hover {
+    text-decoration: underline;
+}
+
+.content {
+    margin-left: 200px;
+    padding: 10px;
 }
 
 
