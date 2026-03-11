@@ -16,7 +16,7 @@
     </div>
 
     <div th:each="post : ${posts}">
-        <div th:replace="fragments/post :: postFragment (${post}, ${commentsByPostId})"></div>
+        <div th:replace="fragments/post :: post"></div>
     </div>
 </main>
 </body>
