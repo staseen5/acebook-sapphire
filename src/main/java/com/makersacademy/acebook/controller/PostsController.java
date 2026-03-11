@@ -10,6 +10,7 @@ import com.makersacademy.acebook.repository.CommentRepository;
 import com.makersacademy.acebook.repository.PostLikeRepository;
 import com.makersacademy.acebook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -85,9 +86,17 @@ public class PostsController {
     }
 
     @PostMapping("/comments/new")
-    public RedirectView create(@ModelAttribute Comment new_comment) {
+    public RedirectView create(@ModelAttribute Comment new_comment, Principal principal) throws IOException {
+        new_comment.setCommentedOn(ZonedDateTime.now());
+
+        OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
+        String email = token.getPrincipal().getAttribute("email");
+        // This will need to be changed if we use username instead of email
+        User user = userRepository.findByUsername(email);
+        new_comment.setUserId(user.getId());
+
+
         commentRepository.save(new_comment);
         return new RedirectView("/posts");
     }
- 
 }
