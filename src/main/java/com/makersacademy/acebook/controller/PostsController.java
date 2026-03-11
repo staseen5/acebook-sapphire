@@ -101,7 +101,7 @@ public class PostsController {
         new_comment.setPost(post);
 
         if (new_comment.getBody() == null || new_comment.getBody().trim().isEmpty()) {
-            return new RedirectView("/posts");
+            return new RedirectView("/");
         }
 
         commentRepository.save(new_comment);
