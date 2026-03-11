@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
@@ -43,22 +44,26 @@ public class PostsController {
 
     @GetMapping("/posts")
     public String index(Model model) {
-        HashMap<Post, List<Comment>> postsWithComments = new HashMap<Post, List<Comment>>();
+        // Get all posts in descending order
         Iterable<Post> posts = repository.findAllByOrderByCreatedAtDesc();
 
-        Map<Long, Long> likeCounts = new HashMap<>();
-        for (Post post : posts) {
-            likeCounts.put(post.getId(), postLikeRepository.countByIdPostId(post.getId()));
-        }
-
+        // Create hash of posts : list of their comments
+        HashMap<Post, List<Comment>> postsWithComments = new HashMap<Post, List<Comment>>();
         for(Post p: posts) {
             List<Comment> comments = commentRepository.findByPostId(p.getId());
             postsWithComments.put(p, comments);
         }
-
         model.addAttribute("posts_with_comments", postsWithComments);
-        model.addAttribute("post", new Post());
+
+        // Create hash of post id : amount of likes
+        Map<Long, Long> likeCounts = new HashMap<>();
+        for (Post post : posts) {
+            likeCounts.put(post.getId(), postLikeRepository.countByIdPostId(post.getId()));
+        }
         model.addAttribute("likeCounts", likeCounts);
+
+        model.addAttribute("post", new Post());
+
         return "posts/index";
     }
 
@@ -69,7 +74,7 @@ public class PostsController {
 
         if (principal != null) {
             User user = userRepository.findByUsername(principal.getName());
-            post.setUserId(user.getId());
+            post.setUser(user);
         }
 
         if(!file.isEmpty()){
