@@ -8,24 +8,25 @@
 
 <body>
     <main>
-        <div class="container">
-        <h1>Create your profile</h1>
+        <div class="create-profile-container">
+        <h1>Create a profile</h1>
         
-        <form th:action="@{/users/setup}" method="post">
-            <div>
+        <form class="form-container" th:action="@{/users/setup}" method="post">
+            <div class="create-profile-form-div">
                 <label for="firstName">First Name:</label>
-                <input type="text" id="firstName" name="firstName" required>
+                <input class="create-profile-input" type="text" id="firstName" name="firstName" required>
             </div>
-            <div>
+            <div class="create-profile-form-div">
                 <label for="lastName">Last Name:</label>
-                <input type="text" id="lastName" name="lastName" required>
+                <input class="create-profile-input" type="text" id="lastName" name="lastName" required>
             </div>
-            <div>
+            <div class="create-profile-form-div">
                 <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
+                <input class="create-profile-input" type="text" id="username" name="username" required>
             </div>
-            
-            <button type="submit">Continue</button>
+            <div class="create-profile-button-div">
+                <button class="create-profile-button" type="submit">Continue</button>
+            </div>
         </form>
     </div>
     </main>
