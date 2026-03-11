@@ -1,4 +1,4 @@
-const input = document.getElementById("profile-pic-input");
+const input = document.getElementById("profile-picture");
 
 const addProfilePicDiv = document.getElementById("add-profile-pic-div");
 const rmvProfilePicDiv = document.getElementById("rmv-profile-pic-div");

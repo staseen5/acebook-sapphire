@@ -11,17 +11,17 @@
     <div class="create-profile-container">
         <h1>Create a profile</h1>
 
-        <form class="form-container" th:action="@{/users/setup}" method="post">
+        <form class="form-container" th:action="@{/users/setup}" enctype="multipart/form-data" method="post">
 
             <div class="profile-picture-div">
 
                 <!-- Button to select profile picture -->
                 <div id="add-profile-pic-div">
-                    <label id="add-profile-pic-btn" for="profile-pic-input" style="cursor: pointer">
+                    <label id="add-profile-pic-btn" for="profile-picture" style="cursor: pointer">
                         <img src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg"
                              alt="add-profile-picture"/>
                     </label>
-                    <input hidden id="profile-pic-input" name="profile-picture-input" type="file" accept="image/*">
+                    <input hidden id="profile-picture" name="profile-picture" type="file" accept="image/*">
 
                     <i class="fa-solid fa-plus center-overlay" style="color: dimgrey; font-size: 40px"></i>
                 </div>
