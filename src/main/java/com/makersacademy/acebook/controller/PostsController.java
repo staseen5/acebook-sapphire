@@ -82,7 +82,7 @@ public class PostsController {
 
     @PostMapping("/")
     public RedirectView create(@ModelAttribute Post post,
-                               @RequestParam("file") MultipartFile file,
+                               @RequestParam("image") MultipartFile file,
                                Principal principal) throws IOException {
 
         if (principal != null) {
@@ -92,9 +92,8 @@ public class PostsController {
             post.setUser(user);
         }
 
-        if(!file.isEmpty()){
+        if (!file.isEmpty()) {
             Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
-
             String publicUrl = (String) uploadResult.get("secure_url");
             post.setImageUrl(publicUrl);
         }
