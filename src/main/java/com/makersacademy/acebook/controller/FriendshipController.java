@@ -13,7 +13,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.security.Principal;
 import java.util.Optional;
 
-// I have built this from the perspective that we will be using usernames in the routes
+// I have built this from the perspective of the username being the routes not the id
 
 @Controller
 @RequestMapping("/friendships")
@@ -25,11 +25,17 @@ public class FriendshipController {
     @Autowired
     UserRepository userRepository;
 
+    private String getUsernameFromPrincipal(Principal principal) {
+        if (principal instanceof OAuth2AuthenticationToken) {
+            OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
+            return token.getPrincipal().getAttribute("email");
+        }
+        return principal.getName();
+    }
+
     @PostMapping("/request/{username}")
     public RedirectView sendRequest(@PathVariable String username, Principal principal) {
-        OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
-        String email = token.getPrincipal().getAttribute("email");
-        User requester = userRepository.findByUsername(email);
+        User requester = userRepository.findByUsername(getUsernameFromPrincipal(principal));
         User addressee = userRepository.findByUsername(username);
 
         Friendship friendship = new Friendship(requester.getId(), addressee.getId());
@@ -40,9 +46,7 @@ public class FriendshipController {
 
     @PostMapping("/accept/{username}")
     public RedirectView acceptRequest(@PathVariable String username, Principal principal) {
-        OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
-        String email = token.getPrincipal().getAttribute("email");
-        User addressee = userRepository.findByUsername(email);
+        User addressee = userRepository.findByUsername(getUsernameFromPrincipal(principal));
         User requester = userRepository.findByUsername(username);
 
         Optional<Friendship> friendship = friendshipRepository
@@ -58,9 +62,7 @@ public class FriendshipController {
 
     @PostMapping("/decline/{username}")
     public RedirectView declineRequest(@PathVariable String username, Principal principal) {
-        OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
-        String email = token.getPrincipal().getAttribute("email");
-        User addressee = userRepository.findByUsername(email);
+        User addressee = userRepository.findByUsername(getUsernameFromPrincipal(principal));
         User requester = userRepository.findByUsername(username);
 
         Optional<Friendship> friendship = friendshipRepository
@@ -73,9 +75,7 @@ public class FriendshipController {
 
     @PostMapping("/block/{username}")
     public RedirectView blockUser(@PathVariable String username, Principal principal) {
-        OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
-        String email = token.getPrincipal().getAttribute("email");
-        User requester = userRepository.findByUsername(email);
+        User requester = userRepository.findByUsername(getUsernameFromPrincipal(principal));
         User addressee = userRepository.findByUsername(username);
 
         Optional<Friendship> existing = friendshipRepository
@@ -95,9 +95,7 @@ public class FriendshipController {
 
     @PostMapping("/unfriend/{username}")
     public RedirectView unfriend(@PathVariable String username, Principal principal) {
-        OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
-        String email = token.getPrincipal().getAttribute("email");
-        User user = userRepository.findByUsername(email);
+        User user = userRepository.findByUsername(getUsernameFromPrincipal(principal));
         User other = userRepository.findByUsername(username);
 
         Optional<Friendship> friendship = friendshipRepository
