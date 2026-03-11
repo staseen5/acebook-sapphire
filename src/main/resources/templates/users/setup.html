@@ -1,16 +1,40 @@
-<html xmlns:th="http://www.thymeleaf.org"
+<html xmlns:th="http://www.thymeleaf.org"/>
 <head>
     <meta charset="UTF-8">
     <title>Profile</title>
     <link rel="stylesheet" href="/main.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 
 <body>
-    <main>
-        <div class="create-profile-container">
+<main>
+    <div class="create-profile-container">
         <h1>Create a profile</h1>
-        
+
         <form class="form-container" th:action="@{/users/setup}" method="post">
+
+            <div class="profile-picture-div">
+
+                <!-- Button to select profile picture -->
+                <div id="add-profile-pic-div">
+                    <label id="add-profile-pic-btn" for="profile-pic-input" style="cursor: pointer">
+                        <img src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg"
+                             alt="add-profile-picture"/>
+                    </label>
+                    <input hidden id="profile-pic-input" name="profile-picture-input" type="file" accept="image/*">
+
+                    <i class="fa-solid fa-plus center-overlay" style="color: dimgrey; font-size: 40px"></i>
+                </div>
+
+                <!--  Profile pic preview with button to remove -->
+                <div id="rmv-profile-pic-div" style="display: none">
+                    <img id="profile-pic-img"
+                         alt="remove-profile-picture"
+                         src=""/>
+                    <button type="button" id="rmv-profile-pic-btn" class="remove-img-btn">✕</button>
+                </div>
+            </div>
+
             <div class="create-profile-form-div">
                 <label for="firstName">First Name:</label>
                 <input class="create-profile-input" type="text" id="firstName" name="firstName" required>
@@ -27,7 +51,8 @@
                 <button class="create-profile-button" type="submit">Continue</button>
             </div>
         </form>
+        <script src="/scripts/profile-picture-preview.js"></script>
     </div>
-    </main>
+</main>
 </body>
 </html>

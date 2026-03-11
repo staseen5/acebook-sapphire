@@ -19,6 +19,7 @@ public class User {
     private String username;
     private String firstName;
     private String lastName;
+    private String profilePictureUrl;
 
     @OneToMany(mappedBy = "user")
     private List<Post> posts;
