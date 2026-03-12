@@ -41,18 +41,22 @@
 
             <div class="create-profile-form-div">
                 <label for="firstName">First Name:</label>
-                <input class="create-profile-input" type="text" id="firstName" name="firstName" required>
+                <input class="create-profile-input" type="text" id="firstName" name="firstName"
+                       th:value="${user != null ? user.firstName : ''}" required>
             </div>
             <div class="create-profile-form-div">
                 <label for="lastName">Last Name:</label>
-                <input class="create-profile-input" type="text" id="lastName" name="lastName" required>
+                <input class="create-profile-input" type="text" id="lastName" name="lastName"
+                       th:value="${user != null ? user.lastName : ''}" required>
             </div>
             <div class="create-profile-form-div">
                 <label for="username">Username:</label>
-                <input class="create-profile-input" type="text" id="username" name="username" required>
+                <input class="create-profile-input" type="text" id="username" name="username"
+                       th:value="${user != null ? user.username : ''}" required>
             </div>
             <div class="create-profile-button-div">
-                <button class="create-profile-button" name="updateUserBtn" type="submit">Continue</button>
+                <button class="create-profile-button" name="updateUserBtn" type="submit"
+                    th:text="${isFirstSetup} ? 'Continue' : 'Update'"> </button>
             </div>
         </form>
         <script src="/scripts/profile-picture-preview.js"></script>
