@@ -12,7 +12,7 @@
 <main>
 
     <div id="user-info-container"
-         style="display: flex; align-items: center; padding: 12px; margin-bottom: 12px; gap:12px; border: 1px solid black">
+         style="display: flex; padding: 12px; margin-bottom: 12px; gap:12px; border: 1px solid black">
 
         <div class="profile-picture-div">
             <img class="profile-picture"
@@ -31,6 +31,32 @@
             <p id="user-id-text" th:text="'userID: ' + ${user.id}"></p>
 
         </div>
+
+        <div th:if="${#authentication?.principal?.attributes?.get('email') != user.email}"
+             id="friend-actions-container" style="display:flex; flex-direction: column; gap: 12px">
+
+            <button id="add-friend-btn" class="btn-primary">
+                Add Friend
+                <i class="fa-solid fa-plus"></i>
+            </button>
+
+            <button id="rmv-friend-btn" class="btn-primary">
+                Remove Friend
+                <i class="fa-solid fa-plus"></i>
+            </button>
+
+            <button id="block-user-btn" class="btn-danger">
+                Block
+                <i class="fa-solid fa-ban" style="color: darkred"></i>
+            </button>
+
+            <button id="unblock-user-btn" class="btn-danger">
+                Unblock
+                <i class="fa-solid fa-eye" style="color: green"></i>
+            </button>
+
+        </div>
+        <script src="/scripts/profile-friend-buttons.js"></script>
     </div>
 
     <div id="page-container" style="display: flex; gap: 12px;">
