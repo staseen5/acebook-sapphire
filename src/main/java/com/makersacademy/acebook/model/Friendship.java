@@ -14,6 +14,16 @@ public class Friendship {
     @Column(name = "status")
     private String status;
 
+    @ManyToOne
+    @MapsId("requesterId")
+    @JoinColumn(name = "requester_id")
+    private User requester;
+
+    @ManyToOne
+    @MapsId("addresseeId")
+    @JoinColumn(name = "addressee_id")
+    private User addressee;
+
     public Friendship() {}
 
     public Friendship(Long requesterId, Long addresseeId) {

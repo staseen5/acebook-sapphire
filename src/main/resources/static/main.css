@@ -12,6 +12,7 @@
 
 html {
     position: relative;
+
     &::after {
         content: "";
         position: fixed;
@@ -28,7 +29,6 @@ body {
     margin: 0;
     padding: 0;
 }
-
 
 /* Header */
 header {
@@ -65,7 +65,6 @@ header input {
     border: 2px solid var(--primary-border-color);
 }
 
-
 main {
     margin: 0 auto 0 auto;
     padding: 12px;
@@ -76,7 +75,6 @@ main {
 
 /* Images */
 .image-thumbnail {
-    object-fit: cover;
     width: 50px;
     height: 50px;
 }
@@ -208,6 +206,7 @@ main {
     width: 150px;
     height: 150px;
 }
+
 .profile-picture-div img {
     object-fit: cover;
     width: 150px;
@@ -250,67 +249,72 @@ main {
     margin-left: auto;
     margin-right: auto;
 }
-    .post-form {
-        margin-bottom: 6px;
-    }
 
-    .post-form textarea {
-        width: 100%;
-        border-radius: 8px;
-        border: 1px solid black;
-        padding: 10px;
-        font-size: 14px;
-        resize: vertical;
-        box-sizing: border-box;
-        font-family: inherit;
-    }
+.post-form {
+    margin-bottom: 6px;
+}
 
-    .post-form input[type="file"] {
-        width: 100%;
-        box-sizing: border-box;
-        font-family: inherit;
-        font-size: 13px;
-        color: #555;
-        cursor: pointer;
-    }
+.post-form {
+    margin-bottom: 6px;
+}
 
-    .post-form .form-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 8px;
-    }
+.post-form textarea {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid black;
+    padding: 10px;
+    font-size: 14px;
+    resize: vertical;
+    box-sizing: border-box;
+    font-family: inherit;
+}
 
-    .post-form .button {
-        background-color: #1540a3;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        padding: 8px 20px;
-        font-size: 14px;
-        cursor: pointer;
-        font-family: inherit;
-    }
+.post-form input[type="file"] {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 13px;
+    color: #555;
+    cursor: pointer;
+}
 
-    .post-form .button:hover {
-        background-color: #2553b6;
-    }
+.post-form .form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+}
 
-    #img-preview-container {
-        display: none;
-        margin-top: 10px;
-        position: relative;
-    }
+.post-form button {
+    background-color: #1540a3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: inherit;
+}
 
-    #img-preview {
-        width: 100%;
-        max-height: 300px;
-        object-fit: cover;
-        border-radius: 12px;
-        display: block;
-    }
+.post-form button:hover {
+    background-color: #2553b6;
+}
 
-.remove-img-btn {
+#img-preview-container {
+    display: none;
+    margin-top: 10px;
+    position: relative;
+}
+
+#img-preview {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+}
+
+#remove-img {
     position: absolute;
     top: 8px;
     right: 8px;
@@ -329,9 +333,9 @@ main {
     padding: 0;
 }
 
-    #img-upload {
-        display: none;
-    }
+#img-upload {
+    display: none;
+}
 
 #Add-Photo-Alternate--Streamline-Rounded-Material {
     cursor: pointer;
@@ -346,4 +350,78 @@ main {
     left: 50%;
     transform: translate(-50%, -50%);
     pointer-events: none;
+}
+
+.tabs-container {
+    padding: 12px;
+}
+
+.tab-buttons {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 8px;
+}
+
+.tab-button {
+    padding: 8px 16px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 8px 8px 0 0;
+}
+
+.tab-button.active {
+    background-color: black;
+    color: white;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.friends-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.friend-card {
+    border: 2px solid black;
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 150px;
+}
+
+.friend-card-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.btn-primary {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-danger {
+    background-color: white;
+    color: black;
+    border: 2px solid black;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
 }

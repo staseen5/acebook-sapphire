@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layouts/main_layout :: layout(~{::title}, ~{::main})}">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Friends</title>
+  <link rel="stylesheet" href="/main.css"/>
+</head>
+<body>
+<main>
+
+  <div class="tabs-container">
+    <div class="tab-buttons">
+      <button class="tab-button active" onclick="showTab('friends', event)">
+        Friends <span class="tab-count" th:text="'(' + ${#lists.size(friends)} + ')'"></span>
+      </button>
+      <button class="tab-button" onclick="showTab('requests', event)">
+        Requests <span class="tab-count" th:text="'(' + ${#lists.size(incomingRequests)} + ')'"></span>
+      </button>
+      <button class="tab-button" onclick="showTab('outgoing', event)">
+        Outgoing <span class="tab-count" th:text="'(' + ${#lists.size(outgoingRequests)} + ')'"></span>
+      </button>
+      <button class="tab-button" onclick="showTab('blocked', event)">
+        Blocked <span class="tab-count" th:text="'(' + ${#lists.size(blockedFriendships)} + ')'"></span>
+      </button>
+    </div>
+
+    <!-- Friends Tab -->
+    <div id="tab-friends" class="tab-content active">
+      <h2>Friends</h2>
+      <p th:if="${#lists.isEmpty(friends)}">You have no friends yet.</p>
+      <div class="friends-grid">
+        <div class="friend-card" th:each="friend: ${friends}">
+          <img class="image-thumbnail"
+               alt="profile picture"
+               src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg"/>
+          <a th:href="@{/profile/{username}(username=${friend.username})}"
+             th:text="${friend.username}"></a>
+          <form th:action="@{/friendships/unfriend/{username}(username=${friend.username})}" method="post">
+            <button type="submit" class="btn-danger">Unfriend</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Incoming Requests Tab -->
+    <div id="tab-requests" class="tab-content">
+      <h2>Incoming Requests</h2>
+      <p th:if="${#lists.isEmpty(incomingRequests)}">No incoming friend requests.</p>
+      <div class="friends-grid">
+        <div class="friend-card" th:each="request: ${incomingRequests}">
+          <img class="image-thumbnail"
+               alt="profile picture"
+               src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-output.jpg"/>
+          <a th:href="@{/profile/{username}(username=${request.requester.username})}"
+             th:text="${request.requester.username}"></a>
+          <div class="friend-card-actions">
+            <form th:action="@{/friendships/accept/{username}(username=${request.requester.username})}" method="post">
+              <button type="submit" class="btn-primary">Accept</button>
+            </form>
+            <form th:action="@{/friendships/decline/{username}(username=${request.requester.username})}" method="post">
+              <button type="submit" class="btn-danger">Decline</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Outgoing Requests Tab -->
+    <div id="tab-outgoing" class="tab-content">
+      <h2>Outgoing Requests</h2>
+      <p th:if="${#lists.isEmpty(outgoingRequests)}">No outgoing friend requests.</p>
+      <div class="friends-grid">
+        <div class="friend-card" th:each="request: ${outgoingRequests}">
+          <img class="image-thumbnail"
+               alt="profile picture"
+               src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg"/>
+          <a th:href="@{/profile/{username}(username=${request.addressee.username})}"
+             th:text="${request.addressee.username}"></a>
+          <p>Pending...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Blocked Tab -->
+    <div id="tab-blocked" class="tab-content">
+      <h2>Blocked Users</h2>
+      <p th:if="${#lists.isEmpty(blockedFriendships)}">No blocked users.</p>
+      <div class="friends-grid">
+        <div class="friend-card" th:each="blocked: ${blockedFriendships}">
+          <img class="image-thumbnail"
+               alt="profile picture"
+               src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg"/>
+          <span th:text="${blocked.addressee.username}"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showTab(tabName, event) {
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+      });
+      document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active');
+      });
+      document.getElementById('tab-' + tabName).classList.add('active');
+      event.target.closest('.tab-button').classList.add('active');
+    }
+  </script>
+
+</main>
+</body>
+</html>
