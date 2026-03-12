@@ -43,13 +43,14 @@
 
     <div class="add-comment-container">
         <div class="comment-text-profile-div">
+            <!--
             <a th:href="@{/profile/{username}(username=${post.user.username})}">
             <img
                     class="image-thumbnail-comment"
                     alt="profile-thumbnail"
                     th:src="${user.getProfilePictureUrl()}">
             </a>
-
+            -->
             <form th:action="@{/comments/new}" method="post" class="comment-form-wrapper">
                 <input type="hidden" name="postId" th:value="${post.id}" />
                 <textarea class="comment-text-area" placeholder="Write a comment" name="body" rows="2" 
