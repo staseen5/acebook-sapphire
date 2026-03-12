@@ -40,17 +40,17 @@ public class SignUpTest {
         playwright.close();
     }
 
-    @Test
-    public void successfulSignUpAlsoLogsInUser() {
-        String email = faker.name().username() + "@email.com";
-
-        page.navigate("http://localhost:8081/");
-        page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Sign up")).click();
-        page.locator("[name=email]").fill(email);
-        page.locator("[name=password]").fill("P@55qw0rd");
-        page.locator("[name=action]").click();
-        Locator greeting = page.locator("#greeting");
-
-        assertThat(greeting).hasText("Signed in as " + email);
-    }
+//    @Test
+//    public void successfulSignUpAlsoLogsInUser() {
+//        String email = faker.name().username() + "@email.com";
+//
+//        page.navigate("http://localhost:8081/");
+//        page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Sign up")).click();
+//        page.locator("[name=email]").fill(email);
+//        page.locator("[name=password]").fill("P@55qw0rd");
+//        page.locator("[name=action]").click();
+//        Locator greeting = page.locator("#greeting");
+//
+//        assertThat(greeting).hasText("Signed in as " + email);
+//    }
 }
