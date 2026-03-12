@@ -34,21 +34,42 @@
         </div>
     </div>
 
-    <form th:action="@{/comments/new}" method="post">
-        <input type="hidden" name="postId" th:value="${post.id}" />
-        <p>
-            Comment:
-            <input type="text" name="body" />
-            <input type="reset" value="Reset"/>
-            <input type="submit" value="Submit"/>
-        </p>
-    </form>
-    
-    <ul th:each="comment: ${post.getComments()}">
-        <!-- Replace comment.userId with however we're mapping from userId to username -->
-        <li th:text="${comment.getUser().getUsername() + ': ' + comment.body}" />
-        <small th:text="${#temporals.format(comment.commentedOn, 'dd MMM yyyy HH:mm')}"/>
-    </ul>
+
+    <div class="add-comment-container">
+        <div class="comment-text-profile-div">
+            <a th:href="@{/profile/{username}(username=${post.user.username})}">
+            <img
+                    class="image-thumbnail-comment"
+                    alt="profile-thumbnail"
+                    th:src="${user.getProfilePictureUrl()}">
+            </a>
+
+            <form th:action="@{/comments/new}" method="post" class="comment-form-wrapper">
+                <input type="hidden" name="postId" th:value="${post.id}" />
+                <textarea class="comment-text-area" placeholder="Write a comment" name="body" rows="2" oninput='this.style.height = "";this.style.height = this.scrollHeight + 2 + "px"'></textarea>
+                <input type="submit" value="Submit" class="comment-submit-btn"/>
+            </form>
+        </div>
+    </div>
+
+    <hr class="comment-line">
+
+    <div class="comment" th:each="comment: ${post.getComments()}">
+        <a th:href="@{/profile/{username}(username=${post.user.username})}">
+        <img
+            class="image-thumbnail-comment"
+            alt="profile-thumbnail"
+            th:src="${comment.user.getProfilePictureUrl()}">
+        </a>
+
+        <div class="comment-content">
+            <a th:href="@{/profile/{username}(username=${post.user.username})}">
+                <p class="comment-username" th:text="${comment.getUser().getUsername()}"></p>
+            </a>
+            <p class="comment-p" th:text="${comment.body}"></p>
+            <small class="comment-timestamp" th:text="${#temporals.format(comment.commentedOn, 'dd MMM yyyy HH:mm')}"></small>
+        </div>
+    </div>
 
 </div>
 

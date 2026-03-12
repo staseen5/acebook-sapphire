@@ -8,6 +8,7 @@
 
 * {
     box-sizing: border-box;
+    font-family: Arial, sans-serif;
 }
 
 html {
@@ -82,7 +83,8 @@ main {
 
 /* Post Fragment */
 .post-container {
-    border: 2px solid black;
+    margin-top: 8px;
+    border: 1px solid #898989;
     border-radius: 12px;
     padding: 12px;
     margin-bottom: 6px;
@@ -98,7 +100,7 @@ main {
 }
 
 .post-content-container {
-    border: 1px solid black;
+    border: 1px solid #898989;;
     border-radius: 8px;
     padding: 12px;
 }
@@ -262,15 +264,28 @@ main {
 .post-form textarea {
     width: 100%;
     border-radius: 8px;
-    border: 1px solid black;
+    border: 1px solid #898989;
     padding: 10px;
     font-size: 14px;
-    resize: vertical;
     box-sizing: border-box;
     font-family: inherit;
+    resize: none;
+}
+
+.post-form textarea:focus {
+    outline: 1px solid #898989;
 }
 
 .post-form input[type="file"] {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 13px;
+    color: #555;
+    cursor: pointer;
+}
+
+.post-form input[type="file"]:focus {
     width: 100%;
     box-sizing: border-box;
     font-family: inherit;
@@ -425,4 +440,103 @@ main {
     padding: 6px 12px;
     border-radius: 6px;
     cursor: pointer;
+}
+
+.add-comment-container {
+    margin: 8px;
+}
+
+.image-thumbnail-comment {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.comment-text-area {
+    margin-left: 4px;
+    flex: 1;
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid #898989;
+    padding: 6px;
+    font-size: 14px;
+    box-sizing: border-box;
+    font-family: inherit;
+    resize: none;
+}
+
+.comment-text-profile-div {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.comment-form-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    flex: 1;
+    gap: 4px;
+}
+
+.comment-submit-btn {
+    flex-shrink: 0;
+    white-space: nowrap;
+    background-color: #1540a3;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: inherit;
+    padding: 4px;
+}
+
+.comment {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 8px 0;
+}
+
+.image-thumbnail-comment {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.comment-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.comment-username {
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+    margin: 0;
+}
+
+.comment-p {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+    word-wrap: break-word;
+}
+
+.comment-timestamp {
+    font-size: 12px;
+    color: #999;
+    margin: 0;
+}
+
+.comment-line {
+    border: 1px solid #B3B3B3;
 }
