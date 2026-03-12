@@ -43,24 +43,28 @@ public class ProfileTest {
 
     @Test
     public void profilePageLoads() {
-        String email = faker.name().username() + "@email.com";
+        String username = faker.name().username();
+        String email = username + "@email.com";
         User user = new User(email);
+        user.setUsername(username);
         userRepository.save(user);
 
-        page.navigate("http://localhost:8081/profile/" + email);
+        page.navigate("http://localhost:8081/profile/" + username);
         Locator pageBody = page.locator("body");
-        assertThat(pageBody).containsText(email);
+        assertThat(pageBody).containsText(username);
     }
 
     @Test
     public void profilePageDisplaysUsername() {
-        String email = faker.name().username() + "@email.com";
+        String username = faker.name().username();
+        String email = username + "@email.com";
         User user = new User(email);
+        user.setUsername(username);
         userRepository.save(user);
 
-        page.navigate("http://localhost:8081/profile/" + email);
+        page.navigate("http://localhost:8081/profile/" + username);
         Locator pageBody = page.locator("body");
-        assertThat(pageBody).containsText(email);
+        assertThat(pageBody).containsText(username);
     }
 
 }
