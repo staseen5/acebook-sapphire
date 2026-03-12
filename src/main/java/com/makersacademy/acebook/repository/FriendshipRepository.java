@@ -22,4 +22,5 @@ public interface FriendshipRepository extends CrudRepository<Friendship, Friends
 
     List<Friendship> findByIdRequesterIdOrIdAddresseeIdAndStatus(Long requesterId, Long addresseeId, String status);
 
+    boolean existsByIdRequesterIdAndIdAddresseeIdAndStatus(Long requesterId, Long addresseeId, String status);
 }

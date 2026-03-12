@@ -73,11 +73,23 @@ public class FriendshipController {
         User requester = userRepository.findByEmail(getUsernameFromPrincipal(principal));
         User addressee = userRepository.findByUsername(username);
 
+        boolean blockedByAddressee = friendshipRepository
+                .existsByIdRequesterIdAndIdAddresseeIdAndStatus(addressee.getId(), requester.getId(), "BLOCKED");
+        boolean blockedByRequester = friendshipRepository
+                .existsByIdRequesterIdAndIdAddresseeIdAndStatus(requester.getId(), addressee.getId(), "BLOCKED");
+
+        if (blockedByAddressee || blockedByRequester) {
+            return new RedirectView("/profile/" + username);
+        }
+
         Friendship friendship = new Friendship(requester.getId(), addressee.getId());
+        friendship.setRequester(requester);
+        friendship.setAddressee(addressee);
         friendshipRepository.save(friendship);
 
         return new RedirectView("/profile/" + username);
     }
+
 
     @PostMapping("/accept/{username}")
     public RedirectView acceptRequest(@PathVariable String username, Principal principal) {
@@ -121,6 +133,8 @@ public class FriendshipController {
             friendshipRepository.save(existing.get());
         } else {
             Friendship friendship = new Friendship(requester.getId(), addressee.getId());
+            friendship.setRequester(requester);
+            friendship.setAddressee(addressee);
             friendship.setStatus("BLOCKED");
             friendshipRepository.save(friendship);
         }
