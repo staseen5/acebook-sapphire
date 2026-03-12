@@ -10,8 +10,8 @@
   </div>
 
 
-  <div th:if="${#authentication != null}">
-    <span th:text="${#authentication.principal.attributes['email']}"></span>
+  <div th:if="${#authorization.expression('isAuthenticated()')}">
+    <span th:text="${#authentication?.principal?.attributes?.get('email')}"></span>
   </div>
 
 </header>
