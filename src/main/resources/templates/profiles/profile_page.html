@@ -11,17 +11,20 @@
 
 <main>
 
-    <div id="user-info-container" style="display: flex; align-items: center; padding: 12px; margin-bottom: 12px; gap:12px; border: 1px solid black">
+    <div id="user-info-container"
+         style="display: flex; align-items: center; padding: 12px; margin-bottom: 12px; gap:12px; border: 1px solid black">
 
-        <img style="width: 150px; height: 150px;"
-             alt="profile-picture"
-             src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg">
+        <div class="profile-picture-div">
+            <img class="profile-picture"
+                 th:alt="${user.getProfilePictureUrl()}"
+                 th:src="${user.getProfilePictureUrl()}"/>
+        </div>
 
         <div id="user-infor-text" style="flex: 1;">
 
             <div id="user-full-name-text" style="display: flex; gap: 6px;">
-                <h1>First Name</h1>
-                <h1>Last Name</h1>
+                <h1 th:text="${user.firstName}"></h1>
+                <h1 th:text="${user.lastName}"></h1>
             </div>
 
             <h4 id="username-text" th:text="'username: ' + ${user.username}"></h4>

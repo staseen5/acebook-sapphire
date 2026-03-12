@@ -76,7 +76,7 @@ public class PostImageUploadTest {
                 "fake-binary-data".getBytes()
         );
 
-        mockMvc.perform(multipart("/posts").file(mockFile).param("content", fakePostContent)).andExpect(status().is3xxRedirection()).andExpect(header().string("Location", "/posts"));
+        mockMvc.perform(multipart("/").file(mockFile).param("content", fakePostContent)).andExpect(status().is3xxRedirection()).andExpect(header().string("Location", "/posts"));
 
         boolean postExists = postRepository.existsByContentAndImageUrl(fakePostContent, fakeImgUrl);
         assertTrue(postExists);

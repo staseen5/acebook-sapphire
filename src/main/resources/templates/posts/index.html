@@ -15,10 +15,31 @@
         Signed in as <span sec:authentication="principal.attributes['email']"></span>
     </div>
 
-    <form action="#" th:action="@{/}" th:object="${post}" method="post">
-        <p>Content: <input type="text" th:field="*{content}"/></p>
-        <p><input type="submit" value="Submit"/> <input type="reset" value="Reset"/></p>
+    <form th:action="@{/}" th:object="${post}" method="post"
+          enctype="multipart/form-data" class="post-container post-form">
+
+        <textarea th:field="*{content}" placeholder="What's on your mind?" rows="3"></textarea>
+
+        <div class="form-footer">
+            <label for="img-upload" id="file-label">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" id="Add-Photo-Alternate--Streamline-Rounded-Material" height="24" width="24">
+                    <desc>
+                        Add Photo Alternate Streamline Icon: https://streamlinehq.com
+                    </desc>
+                    <path fill="#000000" d="M4.5 21c-0.4125 0 -0.765585 -0.1469 -1.05925 -0.44075C3.146915 20.2656 3 19.9125 3 19.5V4.5c0 -0.4125 0.146915 -0.765665 0.44075 -1.0595C3.734415 3.146835 4.0875 3 4.5 3h9.475c0.2125 0 0.39065 0.072335 0.5345 0.217 0.14365 0.1445 0.2155 0.323665 0.2155 0.5375 0 0.213665 -0.07185 0.391335 -0.2155 0.533 -0.14385 0.141665 -0.322 0.2125 -0.5345 0.2125H4.5v15h15V10.05c0 -0.2125 0.07235 -0.39065 0.217 -0.5345 0.1445 -0.14365 0.32365 -0.2155 0.5375 -0.2155 0.21365 0 0.39135 0.07185 0.533 0.2155 0.14165 0.14385 0.2125 0.322 0.2125 0.5345V19.5c0 0.4125 -0.14685 0.7656 -0.4405 1.05925C20.26565 20.8531 19.9125 21 19.5 21H4.5Zm13 -14.475h-1.275c-0.2125 0 -0.3906 -0.07235 -0.53425 -0.217 -0.14385 -0.1445 -0.21575 -0.32365 -0.21575 -0.5375 0 -0.21365 0.0719 -0.39135 0.21575 -0.533 0.14365 -0.14165 0.32175 -0.2125 0.53425 -0.2125H17.5V3.75c0 -0.2125 0.07235 -0.390665 0.217 -0.5345 0.1445 -0.143665 0.32365 -0.2155 0.5375 -0.2155 0.21365 0 0.39135 0.071835 0.533 0.2155 0.14165 0.143835 0.2125 0.322 0.2125 0.5345v1.275h1.275c0.2125 0 0.39065 0.07235 0.5345 0.217 0.14365 0.1445 0.2155 0.32365 0.2155 0.5375 0 0.21365 -0.07185 0.39135 -0.2155 0.533 -0.14385 0.14165 -0.322 0.2125 -0.5345 0.2125H19v1.275c0 0.2125 -0.07235 0.3906 -0.217 0.53425 -0.1445 0.14385 -0.32365 0.21575 -0.5375 0.21575 -0.21365 0 -0.39135 -0.0719 -0.533 -0.21575C17.57085 8.1906 17.5 8.0125 17.5 7.8v-1.275Zm-6.275 9.8 -2.05 -2.7c-0.08335 -0.1 -0.18335 -0.15 -0.3 -0.15 -0.11665 0 -0.21665 0.05 -0.3 0.15l-2.1 2.725c-0.1 0.13335 -0.1125 0.26665 -0.0375 0.4 0.075 0.13335 0.1875 0.2 0.3375 0.2H17.25c0.14165 0 0.2479 -0.06665 0.31875 -0.2 0.07085 -0.13335 0.0646 -0.26665 -0.01875 -0.4l-2.85 -3.8c-0.08335 -0.1 -0.18335 -0.15 -0.3 -0.15 -0.11665 0 -0.21665 0.05 -0.3 0.15l-2.875 3.775Z" stroke-width="0.5"></path>
+                </svg>
+            </label>
+            <input type="file" name="image" accept="image/*" id="img-upload"/>
+
+            <button type="submit" class="button">Post</button>
+        </div>
+
+        <div id="img-preview-container">
+            <img id="img-preview"/>
+            <button type="button" id="remove-img" class="remove-img-btn">✕</button>
+        </div>
     </form>
+    <script src="/scripts/image-preview.js"></script>
 
     <div class="post-wrapper" th:each="post : ${posts}">
         <div th:replace="fragments/post :: post"></div>

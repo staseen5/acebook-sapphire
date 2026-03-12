@@ -3,6 +3,8 @@
        th:if="${#authorization.expression('isAuthenticated()')}">
     <span th:text="${#authentication?.principal?.attributes?.get('email')}"></span>
   <a th:href="@{/profile/{username}(username=${#authentication.principal.attributes['email']})}">
+  <img th:src="@{/images/logoipsum-415.svg}" alt="sapphire-logo">
+  <a th:href="@{/profile/{username}(username=${user.username})}">
     Profile</a>
   </div>
 
@@ -10,6 +12,7 @@
   <a th:href="@{/}">Events</a>
   <a th:href="@{/}">Games</a>
   <a th:href="@{/}">Mysterious Page</a>
-  <a th:href="@{/}">Secrets</a>
+  <a th:href="@{/users/setup}">User Setup</a>
 
+    <a style="margin-top: auto;" th:href="@{/logout}">Logout</a>
 </nav>

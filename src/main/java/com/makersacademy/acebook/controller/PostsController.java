@@ -15,18 +15,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
 import java.security.Principal;
 import java.time.ZonedDateTime;
 import java.util.Map;
-import java.util.Optional;
 import java.util.HashMap;
 
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class PostsController {
@@ -63,19 +60,37 @@ public class PostsController {
         return "posts/index";
     }
 
+    @GetMapping("/search")
+    public String searchPosts(@RequestParam String keyword, Model model) {
+        List<Post> filteredPosts = repository.findPostsByContentContainsIgnoreCase(keyword);
+        model.addAttribute("posts", filteredPosts);
+
+        // Create hash of post id : amount of likes
+        Map<Long, Long> likeCounts = new HashMap<>();
+        for (Post post : filteredPosts) {
+            likeCounts.put(post.getId(), postLikeRepository.countByIdPostId(post.getId()));
+        }
+        model.addAttribute("likeCounts", likeCounts);
+
+        model.addAttribute("post", new Post());
+
+        return "posts/index";
+    }
+
     @PostMapping("/")
     public RedirectView create(@ModelAttribute Post post,
-                               @RequestParam("file") MultipartFile file,
+                               @RequestParam("image") MultipartFile file,
                                Principal principal) throws IOException {
 
         if (principal != null) {
-            User user = userRepository.findByUsername(principal.getName());
+            OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
+            String email = token.getPrincipal().getAttribute("email");
+            User user = userRepository.findByEmail(email);
             post.setUser(user);
         }
 
-        if(!file.isEmpty()){
+        if (!file.isEmpty()) {
             Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
-
             String publicUrl = (String) uploadResult.get("secure_url");
             post.setImageUrl(publicUrl);
         }
@@ -93,7 +108,7 @@ public class PostsController {
         OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
         String email = token.getPrincipal().getAttribute("email");
         // This will need to be changed if we use username instead of email
-        User user = userRepository.findByUsername(email);
+        User user = userRepository.findByEmail(email);
         new_comment.setUser(user);
 
         Post post = repository.findById(postId)
