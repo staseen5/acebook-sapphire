@@ -46,16 +46,18 @@ public class FriendshipControllerTest {
     public void setup() {
         friendshipRepository.deleteAll();
 
-        if (userRepository.findByUsername("user") == null) {
+        Optional<User> requesterUser = userRepository.findByUsername("user");
+        if (requesterUser.isEmpty()) {
             requester = userRepository.save(new User("user"));
         } else {
-            requester = userRepository.findByUsername("user");
+            requester = requesterUser.get();
         }
 
-        if (userRepository.findByUsername("otheruser") == null) {
+        Optional<User> addresseeUser = userRepository.findByUsername("otheruser");
+        if (addresseeUser.isEmpty()) {
             addressee = userRepository.save(new User("otheruser"));
         } else {
-            addressee = userRepository.findByUsername("otheruser");
+            addressee = addresseeUser.get();
         }
     }
 
