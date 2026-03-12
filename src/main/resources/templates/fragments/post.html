@@ -28,8 +28,12 @@
         <div class="post-footer">
             <small th:text="${#temporals.format(post.createdAt, 'dd MMM yyyy HH:mm')}"></small>
             <div class="post-likes-container">
-                <img th:src="@{/images/heart.png}" alt="like" width="16" height="16">
-                <small th:text="${likeCounts[post.id]} + ' likes'"></small>
+                <span class="like-btn"
+                      th:attr="data-post-id=${post.id}"
+                      style="cursor: pointer; font-size: 20px;"
+                      th:text="${likedPostIds != null and likedPostIds.contains(post.id)} ? '❤️' : '🤍'">
+                </span>
+                <small class="like-count" th:text="${likeCounts[post.id]} + ' likes'"></small>
             </div>
         </div>
     </div>

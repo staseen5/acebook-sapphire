@@ -44,5 +44,22 @@
     <div class="post-wrapper" th:each="post : ${posts}">
         <div th:replace="fragments/post :: post"></div>
     </div>
+
+    <script>
+        document.addEventListener('click', function(e) {
+            const btn = e.target.closest('.like-btn');
+            if (!btn) return;
+
+            const postId = btn.getAttribute('data-post-id');
+
+            fetch('/posts/' + postId + '/like', { method: 'POST', headers: { 'X-CSRF-TOKEN': document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1] || '' } })
+                .then(res => res.json())
+                .then(data => {
+                    btn.textContent = data.liked ? '❤️' : '🤍';
+                    btn.closest('.post-likes-container').querySelector('.like-count').textContent = data.likes + ' likes';
+                });
+        });
+    </script>
+</main>
 </body>
 </html>

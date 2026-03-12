@@ -42,19 +42,30 @@ public class PostsController {
     PostLikeRepository postLikeRepository;
 
     @GetMapping("/")
-    public String index(Model model) {
-        // Get all posts in descending order
+    public String index(Model model, Principal principal) {
         Iterable<Post> posts = repository.findAllByOrderByCreatedAtDesc();
-
         model.addAttribute("posts", posts);
 
-        // Create hash of post id : amount of likes
         Map<Long, Long> likeCounts = new HashMap<>();
         for (Post post : posts) {
             likeCounts.put(post.getId(), postLikeRepository.countByIdPostId(post.getId()));
         }
         model.addAttribute("likeCounts", likeCounts);
 
+        // Build set of post IDs the current user has liked
+        java.util.Set<Long> likedPostIds = new java.util.HashSet<>();
+        if (principal instanceof OAuth2AuthenticationToken token) {
+            String email = token.getPrincipal().getAttribute("email");
+            User user = userRepository.findByEmail(email);
+            if (user != null) {
+                for (Post post : posts) {
+                    if (postLikeRepository.existsByIdUserIdAndIdPostId(user.getId(), post.getId())) {
+                        likedPostIds.add(post.getId());
+                    }
+                }
+            }
+        }
+        model.addAttribute("likedPostIds", likedPostIds);
         model.addAttribute("post", new Post());
 
         return "posts/index";
