@@ -466,6 +466,10 @@ main {
     resize: none;
 }
 
+.comment-text-area:focus {
+    outline: 1px solid #898989;
+}
+
 .comment-text-profile-div {
     display: flex;
     flex-direction: row;
