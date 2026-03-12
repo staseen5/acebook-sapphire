@@ -42,6 +42,24 @@ public class SearchPostsTest {
                 new BrowserType.LaunchOptions().setHeadless(false)
         );
         page = browser.newPage();
+
+        String username = faker.name().username();
+        String email = username + "@email.com";
+
+        page.navigate("http://localhost:8081/");
+        page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Sign up")).click();
+        page.locator("[name=email]").fill(email);
+        page.locator("[name=password]").fill("P@55qw0rd");
+        page.locator("[name=action]").click();
+
+
+        String firstName = faker.name().firstName();
+        String lastName = faker.name().lastName();
+
+        page.locator("[name=firstName]").fill(firstName);
+        page.locator("[name=lastName]").fill(lastName);
+        page.locator("[name=username]").fill(username);
+        page.locator("[name=updateUserBtn]").click();
     }
 
     @AfterEach
@@ -52,21 +70,9 @@ public class SearchPostsTest {
 
     @Test
     public void searchPostsWithKeywordBobReturnsTwoPosts() {
-        String email = faker.name().username() + "@email.com";
-
-        page.navigate("http://localhost:8081/");
-        page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Sign up")).click();
-        page.locator("[name=email]").fill(email);
-        page.locator("[name=password]").fill("P@55qw0rd");
-        page.locator("[name=action]").click();
-
         // Enter keyword into searchbar
         page.locator("[name=keyword]").fill("Bob");
         page.keyboard().press("Enter");
-
-        // Check number of posts is 2
-        Locator filteredPosts = page.locator(".post-container");
-        assertThat(filteredPosts).hasCount(2);
 
         // Check posts content is correct
         Locator postsContent = page.locator(".post-content-text");

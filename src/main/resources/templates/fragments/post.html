@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<div class="post-container" th:fragment="post">
+<div th:id="'post-container-id-' + ${post.id}" class="post-container" th:fragment="post">
 
     <div id="user-info" class="post-user-info-container">
         <!-- REPLACE WITH URL FROM DB -->
