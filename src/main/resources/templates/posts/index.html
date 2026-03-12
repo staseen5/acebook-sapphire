@@ -17,7 +17,9 @@
 
     <form th:action="@{/}" th:object="${post}" method="post"
           enctype="multipart/form-data" class="post-container post-form">
+
         <textarea th:field="*{content}" placeholder="What's on your mind?" rows="3"></textarea>
+
         <div class="form-footer">
             <label for="img-upload" id="file-label">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" id="Add-Photo-Alternate--Streamline-Rounded-Material" height="24" width="24">
@@ -28,11 +30,13 @@
                 </svg>
             </label>
             <input type="file" name="image" accept="image/*" id="img-upload"/>
-            <button type="submit">Post</button>
+
+            <button type="submit" class="button">Post</button>
         </div>
+
         <div id="img-preview-container">
             <img id="img-preview"/>
-            <button type="button" id="remove-img">✕</button>
+            <button type="button" id="remove-img" class="remove-img-btn">✕</button>
         </div>
     </form>
     <script src="/scripts/image-preview.js"></script>

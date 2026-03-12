@@ -12,6 +12,7 @@
 
 html {
     position: relative;
+
     &::after {
         content: "";
         position: fixed;
@@ -28,7 +29,6 @@ body {
     margin: 0;
     padding: 0;
 }
-
 
 /* Header */
 header {
@@ -77,6 +77,7 @@ main {
 .image-thumbnail {
     width: 50px;
     height: 50px;
+    object-fit: cover;
 }
 
 /* Post Fragment */
@@ -193,6 +194,27 @@ main {
     margin-bottom: 16px;
 }
 
+/* Profile Picture */
+.profile-picture-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+}
+
+.profile-picture-div div {
+    position: relative;
+    width: 150px;
+    height: 150px;
+}
+
+.profile-picture-div img {
+    object-fit: cover;
+    width: 150px;
+    height: 150px;
+}
+
+/* Create Profile */
 .create-profile-container {
     display: flex;
     flex-direction: column;
@@ -319,80 +341,88 @@ main {
 #Add-Photo-Alternate--Streamline-Rounded-Material {
     cursor: pointer;
 }
-#Add-Photo-Alternate--Streamline-Rounded-Material {
+
+
+/* Generic */
+.center-overlay {
+    z-index: 10;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.tabs-container {
+    padding: 12px;
+}
+
+.tab-buttons {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 8px;
+}
+
+.tab-button {
+    padding: 8px 16px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 1rem;
+    border-radius: 8px 8px 0 0;
+}
+
+.tab-button.active {
+    background-color: black;
+    color: white;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.friends-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.friend-card {
+    border: 2px solid black;
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 150px;
+}
+
+.friend-card-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.btn-primary {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
     cursor: pointer;
 }
 
-    .tabs-container {
-        padding: 12px;
-    }
-
-    .tab-buttons {
-        display: flex;
-        gap: 8px;
-        margin-bottom: 16px;
-        border-bottom: 2px solid #ccc;
-        padding-bottom: 8px;
-    }
-
-    .tab-button {
-        padding: 8px 16px;
-        border: none;
-        background: none;
-        cursor: pointer;
-        font-size: 1rem;
-        border-radius: 8px 8px 0 0;
-    }
-
-    .tab-button.active {
-        background-color: black;
-        color: white;
-    }
-
-    .tab-content {
-        display: none;
-    }
-
-    .tab-content.active {
-        display: block;
-    }
-
-    .friends-grid {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-    }
-
-    .friend-card {
-        border: 2px solid black;
-        border-radius: 12px;
-        padding: 12px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
-        width: 150px;
-    }
-
-    .friend-card-actions {
-        display: flex;
-        gap: 6px;
-    }
-
-    .btn-primary {
-        background-color: black;
-        color: white;
-        border: none;
-        padding: 6px 12px;
-        border-radius: 6px;
-        cursor: pointer;
-    }
-
-    .btn-danger {
-        background-color: white;
-        color: black;
-        border: 2px solid black;
-        padding: 6px 12px;
-        border-radius: 6px;
-        cursor: pointer;
-    }
+.btn-danger {
+    background-color: white;
+    color: black;
+    border: 2px solid black;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
