@@ -1,6 +1,5 @@
 package com.makersacademy.acebook.controller;
 
-import com.makersacademy.acebook.model.Comment;
 import com.makersacademy.acebook.model.Post;
 import com.makersacademy.acebook.model.User;
 import com.makersacademy.acebook.repository.*;
@@ -31,7 +30,7 @@ public class ProfileController {
     public ModelAndView getProfile(@PathVariable String username) {
         ModelAndView profilePage = new ModelAndView("profiles/profile_page");
 
-        User currentUser = userRepository.findByUsername(username);
+        User currentUser = userRepository.findByUsername(username).orElseThrow();
         profilePage.addObject("user", currentUser);
 
         // Create hash of post id : amount of likes

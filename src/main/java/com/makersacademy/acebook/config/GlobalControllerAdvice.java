@@ -16,12 +16,16 @@ public class GlobalControllerAdvice {
 
     @ModelAttribute("user")
     public User user() {
-        DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
+        Object principal = SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getPrincipal();
-        
-        String email = (String) principal.getAttributes().get("email");
+
+        // to allow for null in tests
+        if (!(principal instanceof DefaultOidcUser oidcUser)) {
+            return null;
+        }
+        String email = (String) oidcUser.getAttributes().get("email");
         
         User user = userRepository.findByEmail(email);
         
