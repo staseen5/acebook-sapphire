@@ -71,7 +71,7 @@ public class FriendshipController {
     @PostMapping("/request/{username}")
     public RedirectView sendRequest(@PathVariable String username, Principal principal) {
         User requester = userRepository.findByEmail(getUsernameFromPrincipal(principal));
-        User addressee = userRepository.findByUsername(username);
+        User addressee = userRepository.findByUsername(username).orElseThrow();
 
         boolean blockedByAddressee = friendshipRepository
                 .existsByIdRequesterIdAndIdAddresseeIdAndStatus(addressee.getId(), requester.getId(), "BLOCKED");
@@ -94,7 +94,7 @@ public class FriendshipController {
     @PostMapping("/accept/{username}")
     public RedirectView acceptRequest(@PathVariable String username, Principal principal) {
         User addressee = userRepository.findByEmail(getUsernameFromPrincipal(principal));
-        User requester = userRepository.findByUsername(username);
+        User requester = userRepository.findByUsername(username).orElseThrow();
 
         Optional<Friendship> friendship = friendshipRepository
                 .findByIdRequesterIdAndIdAddresseeId(requester.getId(), addressee.getId());
@@ -110,7 +110,7 @@ public class FriendshipController {
     @PostMapping("/decline/{username}")
     public RedirectView declineRequest(@PathVariable String username, Principal principal) {
         User addressee = userRepository.findByEmail(getUsernameFromPrincipal(principal));
-        User requester = userRepository.findByUsername(username);
+        User requester = userRepository.findByUsername(username).orElseThrow();
 
         Optional<Friendship> friendship = friendshipRepository
                 .findByIdRequesterIdAndIdAddresseeId(requester.getId(), addressee.getId());
@@ -123,7 +123,7 @@ public class FriendshipController {
     @PostMapping("/block/{username}")
     public RedirectView blockUser(@PathVariable String username, Principal principal) {
         User requester = userRepository.findByEmail(getUsernameFromPrincipal(principal));
-        User addressee = userRepository.findByUsername(username);
+        User addressee = userRepository.findByUsername(username).orElseThrow();
 
         Optional<Friendship> existing = friendshipRepository
                 .findByIdRequesterIdAndIdAddresseeId(requester.getId(), addressee.getId());
@@ -145,7 +145,7 @@ public class FriendshipController {
     @PostMapping("/unfriend/{username}")
     public RedirectView unfriend(@PathVariable String username, Principal principal) {
         User user = userRepository.findByEmail(getUsernameFromPrincipal(principal));
-        User other = userRepository.findByUsername(username);
+        User other = userRepository.findByUsername(username).orElseThrow();
 
         Optional<Friendship> friendship = friendshipRepository
                 .findByIdRequesterIdAndIdAddresseeId(user.getId(), other.getId());

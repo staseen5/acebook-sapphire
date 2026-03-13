@@ -14,7 +14,13 @@
                 alt="profile-thumbnail"
                 th:src="${post.user.getProfilePictureUrl()}">
 
-        <a th:href="@{/profile/{username}(username=${post.user.username})}"><h4 th:text="${post.user.username}"></h4></a>
+    
+            <div class="user-details">
+                <a th:href="@{/profile/{username}(username=${post.user.username})}">
+                    <h4 class="name-text" th:text="${post.user.firstName} + ' ' + ${post.user.lastName}"></h4>
+                </a>
+                <p class="username-text" th:text="${post.user.username}"></p>
+            </div>
     </div>
 
     <div class="post-content-container">
@@ -41,16 +47,18 @@
 
     <div class="add-comment-container">
         <div class="comment-text-profile-div">
+            <!--
             <a th:href="@{/profile/{username}(username=${post.user.username})}">
             <img
                     class="image-thumbnail-comment"
                     alt="profile-thumbnail"
                     th:src="${user.getProfilePictureUrl()}">
             </a>
-
+            -->
             <form th:action="@{/comments/new}" method="post" class="comment-form-wrapper">
                 <input type="hidden" name="postId" th:value="${post.id}" />
-                <textarea class="comment-text-area" placeholder="Write a comment" name="body" rows="2" oninput='this.style.height = "";this.style.height = this.scrollHeight + 2 + "px"'></textarea>
+                <textarea class="comment-text-area" placeholder="Write a comment" name="body" rows="2" 
+                oninput='this.style.height = "";this.style.height = this.scrollHeight + 3 + "px"'></textarea>
                 <input type="submit" value="Submit" class="comment-submit-btn"/>
             </form>
         </div>
@@ -59,7 +67,7 @@
     <hr class="comment-line">
 
     <div class="comment" th:each="comment: ${post.getComments()}">
-        <a th:href="@{/profile/{username}(username=${post.user.username})}">
+        <a th:href="@{/profile/{username}(username=${comment.user.getUsername()})}">
         <img
             class="image-thumbnail-comment"
             alt="profile-thumbnail"
@@ -68,7 +76,8 @@
 
         <div class="comment-content">
             <a th:href="@{/profile/{username}(username=${post.user.username})}">
-                <p class="comment-username" th:text="${comment.getUser().getUsername()}"></p>
+                <p class="comment-name" th:text="${comment.user.getFirstName()} + ' ' + ${comment.user.getLastName()}"></p>
+                <!--<p class="comment-username" th:text="${comment.user.getUsername()}"></p>-->
             </a>
             <p class="comment-p" th:text="${comment.body}"></p>
             <small class="comment-timestamp" th:text="${#temporals.format(comment.commentedOn, 'dd MMM yyyy HH:mm')}"></small>
