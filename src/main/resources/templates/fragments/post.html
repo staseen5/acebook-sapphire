@@ -18,7 +18,7 @@
     </div>
 
     <div class="post-content-container">
-        <p class="post-content-text" th:text="${post.content}"/>
+        <p class="post-content-text mention-content" th:text="${post.content}"/>
         <div class="post-img-parent">
             <img th:if="${post.imageUrl != null}"
                  th:src="${post.imageUrl}"
