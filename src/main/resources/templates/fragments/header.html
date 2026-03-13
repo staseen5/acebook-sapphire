@@ -1,9 +1,5 @@
 <header th:fragment="header" class="header">
 
-  <div>
-    <img th:src="@{/images/logoipsum-415.svg}" alt="sapphire-logo">
-  </div>
-
   <div class="header-searchbar-container">
     <form th:action="@{/search}" method="get" style="display: flex">
       <input id="posts-searchbar" type="text" name="keyword" placeholder="search posts..." />
