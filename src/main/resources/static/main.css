@@ -656,13 +656,13 @@
     --logo-color: #0094f7;
 
     --card-bg: #ffffff;
-    --card-border: rgba(0, 0, 0, 0.07);
-    --card-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
+    --card-border: rgba(21, 64, 163, 0.1);
+    --card-shadow: 0 2px 16px rgba(21, 64, 163, 0.08);
     --text-primary: #111827;
-    --text-secondary: #6b7280;
+    --text-secondary: #4b5563;
     --text-muted: #9ca3af;
-    --input-bg: #f9fafb;
-    --input-border: #e5e7eb;
+    --input-bg: #f3f5fb;
+    --input-border: #d1d9f0;
     --accent: #1540a3;
     --accent-hover: #2553b6;
 }
@@ -701,8 +701,22 @@ html::after {
     background: var(--page-bg-color);
 }
 
+/* Light mode: gradient only behind the 240px navbar strip */
 html:not([data-theme="dark"])::after {
-    background-image: linear-gradient(to bottom, var(--primary-bg-color-top), var(--primary-bg-color-bottom));
+    background: linear-gradient(to bottom, var(--primary-bg-color-top), var(--primary-bg-color-bottom));
+    width: 240px;
+}
+
+/* Light mode: solid neutral bg for the content area */
+html:not([data-theme="dark"]) body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 240px;
+    right: 0;
+    height: 100%;
+    background: #eef1f8;
+    z-index: -1;
 }
 
 body {
@@ -1354,3 +1368,76 @@ p { color: var(--text-primary); }
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 3px; }
+
+/* ============================================================
+   LIGHT MODE OVERRIDES
+   ============================================================ */
+
+/* Header in light mode — sits over the solid content bg */
+html:not([data-theme="dark"]) header {
+    background-color: rgba(238, 241, 248, 0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(21, 64, 163, 0.1);
+    color: var(--text-primary);
+}
+
+html:not([data-theme="dark"]) #posts-searchbar {
+    background: #ffffff;
+    color: var(--text-primary);
+    border: 1px solid var(--input-border);
+    box-shadow: 0 1px 4px rgba(21, 64, 163, 0.07);
+}
+
+html:not([data-theme="dark"]) #posts-searchbar::placeholder {
+    color: var(--text-muted);
+}
+
+html:not([data-theme="dark"]) header span,
+html:not([data-theme="dark"]) header div {
+    color: var(--text-secondary);
+}
+
+html:not([data-theme="dark"]) #theme-toggle {
+    background: rgba(21, 64, 163, 0.08);
+    border: 1px solid rgba(21, 64, 163, 0.15);
+    color: var(--accent);
+}
+
+html:not([data-theme="dark"]) .loginbutton {
+    background: rgba(21, 64, 163, 0.08) !important;
+    color: var(--accent) !important;
+    border: 1px solid rgba(21, 64, 163, 0.2) !important;
+}
+
+/* Profile page — remove harsh black inline borders via CSS override */
+#user-info-container,
+#page-container > div,
+#left-page-section,
+#right-page-section {
+    border: 1px solid var(--card-border) !important;
+    border-radius: 14px !important;
+    background: var(--card-bg) !important;
+    box-shadow: var(--card-shadow) !important;
+}
+
+/* Make the two-column layout on profile page look clean */
+#page-container {
+    gap: 12px;
+}
+
+#left-page-section,
+#right-page-section {
+    padding: 16px !important;
+}
+
+/* Profile section headings */
+#friends-header,
+#photos-container h3,
+#right-page-section h3 {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
