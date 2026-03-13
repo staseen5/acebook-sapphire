@@ -13,7 +13,9 @@
 
     <div sec:authorize="isAuthenticated()" id="greeting">
         <!--Signed in as <span sec:authentication="principal.attributes['email']"></span>-->
-        <p>Hello, <span th:text="${user.getFirstName() + ' ' + user.getLastName()}"></span></p>
+        <p th:if="${loggedInUser != null}">
+            Hello, <span th:text="${loggedInUser.firstName + (loggedInUser.lastName != null ? ' ' + loggedInUser.lastName : '')}"></span>
+        </p>
     </div>
 
 
