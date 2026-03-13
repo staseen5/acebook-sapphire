@@ -12,7 +12,7 @@
 <main>
 
     <div id="user-info-container"
-         style="display: flex; align-items: center; padding: 12px; margin-bottom: 12px; gap:12px; border: 1px solid black">
+         style="display: flex; padding: 12px; margin-bottom: 12px; gap:12px; border: 1px solid black">
 
         <div class="profile-picture-div">
             <img class="profile-picture"
@@ -31,6 +31,32 @@
             <p id="user-id-text" th:text="'userID: ' + ${user.id}"></p>
 
         </div>
+
+        <div th:if="${#authentication?.principal?.attributes?.get('email') != user.email}"
+             id="friend-actions-container" style="display:flex; flex-direction: column; gap: 12px">
+
+            <button id="add-friend-btn" class="btn-primary">
+                Add Friend
+                <i class="fa-solid fa-plus"></i>
+            </button>
+
+            <button id="rmv-friend-btn" class="btn-primary">
+                Remove Friend
+                <i class="fa-solid fa-plus"></i>
+            </button>
+
+            <button id="block-user-btn" class="btn-danger">
+                Block
+                <i class="fa-solid fa-ban" style="color: darkred"></i>
+            </button>
+
+            <button id="unblock-user-btn" class="btn-danger">
+                Unblock
+                <i class="fa-solid fa-eye" style="color: green"></i>
+            </button>
+
+        </div>
+        <script src="/scripts/profile-friend-buttons.js"></script>
     </div>
 
     <div id="page-container" style="display: flex; gap: 12px;">
@@ -41,17 +67,16 @@
 
                 <h3 id="friends-header">MY FRIENDS:</h3>
 
+                <p th:if="${#lists.isEmpty(friends)}">You have no friends yet.</p>
+
                 <div id="friends-list" style="display: flex">
-                    <img style="width: 50px; height: 50px; margin: 6px;"
-                         src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg">
-                    <img style="width: 50px; height: 50px; margin: 6px;"
-                         src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg">
-                    <img style="width: 50px; height: 50px; margin: 6px;"
-                         src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg">
-                    <img style="width: 50px; height: 50px; margin: 6px;"
-                         src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg">
-                    <img style="width: 50px; height: 50px; margin: 6px;"
-                         src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg">
+                    <div class="profile-friend-card" th:each="friend: ${friends}">
+                        <img class="image-thumbnail-lg"
+                             alt="profile picture"
+                             th:src="${friend.getProfilePictureUrl()}"/>
+                        <a th:href="@{/profile/{username}(username=${friend.username})}"
+                           th:text="${friend.username}"></a>
+                    </div>
                 </div>
 
             </div>
