@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.HashMap;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -94,6 +95,18 @@ public class PostsController {
             }
         }
 
+        Map<Long, List<User>> taggedUsers = new HashMap<>();
+        for (Post post : posts) {
+            List<User> tagged = postTagRepository.findByIdPostId(post.getId())
+                    .stream()
+                    .map(tag -> userRepository.findById(tag.getId().getUserId()).orElse(null))
+                    .filter(Objects::nonNull)
+                    .toList();
+            taggedUsers.put(post.getId(), tagged);
+        }
+
+        model.addAttribute("taggedUsers", taggedUsers);
+        model.addAttribute("posts", posts);
         model.addAttribute("likeCounts", likeCounts);
         model.addAttribute("likedPostIds", likedPostIds);
         model.addAttribute("post", new Post());
@@ -171,7 +184,7 @@ public class PostsController {
         Matcher matcher = TAG_REGEX.matcher(post.getContent());
         while (matcher.find()) {
             String mentionedUser = matcher.group(1);
-            User taggedUser = userRepository.findByUsername(mentionedUser).orElse(null);
+            User taggedUser = userRepository.findByUsernameIgnoreCase(mentionedUser).orElse(null);
 
             if (taggedUser == null) continue;
             if (taggedUser.getId().equals(post.getUser().getId())) continue;
