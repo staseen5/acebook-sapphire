@@ -52,15 +52,15 @@ public class SearchPostsTest {
         playwright.close();
     }
 
-//    @Test
-//    public void searchPostsWithKeywordBobReturnsTwoPosts() {
-//        // Enter keyword into searchbar
-//        page.locator("[name=keyword]").fill("Bob");
-//        page.keyboard().press("Enter");
-//
-//        // Check posts content is correct
-//        Locator postsContent = page.locator(".post-content-text");
-//        assertThat(postsContent.nth(0)).containsText("Hey everyone, Bob here!");
-//        assertThat(postsContent.nth(1)).containsText("Bob posting again. Loving this platform so far.");
-//    }
+    @Test
+    public void searchPostsWithKeywordBobReturnsTwoPosts() {
+        // Enter keyword into searchbar
+        page.locator("[name=keyword]").fill("Bob");
+        page.keyboard().press("Enter");
+
+        // Check posts content is correct
+        Locator postsContent = page.locator(".post-content-text");
+        assertThat(postsContent.nth(0)).containsText("Hey everyone, Bob here!");
+        assertThat(postsContent.nth(1)).containsText("Bob posting again. Loving this platform so far.");
+    }
 }
