@@ -16,22 +16,21 @@
 
         <div class="profile-picture-div">
             <img class="profile-picture"
-                 th:alt="${user.getProfilePictureUrl()}"
-                 th:src="${user.getProfilePictureUrl()}"/>
+                 th:alt="${profileUser.getProfilePictureUrl()}"
+                 th:src="${profileUser.getProfilePictureUrl()}"/>
         </div>
 
         <div id="user-info-text" style="flex: 1;">
             <div id="user-full-name-text" style="display: flex; gap: 6px;">
-                <h1 th:text="${user.firstName}"></h1>
-                <h1 th:text="${user.lastName}"></h1>
+                <h1 th:text="${profileUser.firstName}"></h1>
+                <h1 th:text="${profileUser.lastName}"></h1>
 
                 <a th:if="${#authentication?.principal?.attributes?.get('email') == user.email}"
                    th:href="@{/profile/edit}" class="edit-profile-link"><i class="fas fa-edit"></i>Edit profile</a>
             </div>
 
-            <h4 id="username-text" th:text="'username: ' + ${user.username}"></h4>
-            <p id="user-id-text" th:text="'userID: ' + ${user.id}"></p>
-
+            <h4 id="username-text" th:text="'username: ' + ${profileUser.username}"></h4>
+            <p id="user-id-text" th:text="'userID: ' + ${profileUser.id}"></p>
         </div>
 
         <!-- Only show action buttons when viewing someone else's profile -->
@@ -40,12 +39,12 @@
 
             <!-- NONE: no relationship yet -->
             <th:block th:if="${friendshipStatus == 'NONE'}">
-                <form th:action="@{/friends/request/{u}(u=${user.username})}" method="post">
+                <form th:action="@{/friends/request/{u}(u=${profileUser.username})}" method="post">
                     <button type="submit" class="btn-primary">
                         Add Friend <i class="fa-solid fa-plus"></i>
                     </button>
                 </form>
-                <form th:action="@{/friends/block/{u}(u=${user.username})}" method="post">
+                <form th:action="@{/friends/block/{u}(u=${profileUser.username})}" method="post">
                     <button type="submit" class="btn-danger">
                         Block <i class="fa-solid fa-ban" style="color: darkred"></i>
                     </button>
@@ -55,19 +54,19 @@
             <!-- PENDING + I sent it -->
             <th:block th:if="${friendshipStatus == 'PENDING' and friendshipDirection == 'I_SENT'}">
                 <p style="color: grey; font-style: italic;">Friend request sent</p>
-                <form th:action="@{/friends/unfriend/{u}(u=${user.username})}" method="post">
+                <form th:action="@{/friends/unfriend/{u}(u=${profileUser.username})}" method="post">
                     <button type="submit" class="btn-secondary">Cancel Request</button>
                 </form>
             </th:block>
 
             <!-- PENDING + they sent it -->
             <th:block th:if="${friendshipStatus == 'PENDING' and friendshipDirection == 'THEY_SENT'}">
-                <form th:action="@{/friends/accept/{u}(u=${user.username})}" method="post">
+                <form th:action="@{/friends/accept/{u}(u=${profileUser.username})}" method="post">
                     <button type="submit" class="btn-primary">
                         Accept Request <i class="fa-solid fa-check"></i>
                     </button>
                 </form>
-                <form th:action="@{/friends/decline/{u}(u=${user.username})}" method="post">
+                <form th:action="@{/friends/decline/{u}(u=${profileUser.username})}" method="post">
                     <button type="submit" class="btn-secondary">
                         Decline <i class="fa-solid fa-xmark"></i>
                     </button>
@@ -77,10 +76,10 @@
             <!-- ACCEPTED -->
             <th:block th:if="${friendshipStatus == 'ACCEPTED'}">
                 <p style="color: green;">&#10003; Friends</p>
-                <form th:action="@{/friends/unfriend/{u}(u=${user.username})}" method="post">
+                <form th:action="@{/friends/unfriend/{u}(u=${profileUser.username})}" method="post">
                     <button type="submit" class="btn-secondary">Unfriend</button>
                 </form>
-                <form th:action="@{/friends/block/{u}(u=${user.username})}" method="post">
+                <form th:action="@{/friends/block/{u}(u=${profileUser.username})}" method="post">
                     <button type="submit" class="btn-danger">
                         Block <i class="fa-solid fa-ban" style="color: darkred"></i>
                     </button>
@@ -90,7 +89,7 @@
             <!-- BLOCKED by current user -->
             <th:block th:if="${friendshipStatus == 'BLOCKED' and friendshipDirection == 'I_SENT'}">
                 <p style="color: grey;">User blocked</p>
-                <form th:action="@{/friends/unfriend/{u}(u=${user.username})}" method="post">
+                <form th:action="@{/friends/unfriend/{u}(u=${profileUser.username})}" method="post">
                     <button type="submit" class="btn-danger">
                         Unblock <i class="fa-solid fa-eye" style="color: green"></i>
                     </button>
@@ -128,7 +127,6 @@
             <div id="photos-container" style="margin:6px;">
                 <h3>MY PHOTOS:</h3>
                 <div style="display:flex; flex-wrap:wrap; gap:6px;">
-
                     <th:block th:each="photoPost : ${photoPosts}">
                         <img class="profile-photo-thumb"
                              style="width:80px; height:80px; object-fit:cover; cursor:pointer; border-radius:4px;"
@@ -138,7 +136,6 @@
                              th:data-caption="'Posted by @' + ${photoPost.user.username}"
                              onclick="openLightbox(this)"/>
                     </th:block>
-
                     <p th:if="${photoPosts == null or #lists.isEmpty(photoPosts)}"
                        style="color:grey; font-size:0.9em;">No photos yet.</p>
                 </div>
@@ -155,14 +152,14 @@
                 <p style="color:#888; font-size:0.8em;">Click anywhere to close</p>
             </div>
 
-           <script src="/scripts/lightbox.js"></script>
+            <script src="/scripts/lightbox.js"></script>
         </div>
 
         <div id="right-page-section" style="flex:2; padding:12px; border: 1px solid black;">
 
             <h3>MY POSTS:</h3>
 
-            <div th:each="post: ${user.getPosts()}">
+            <div th:each="post: ${allPosts}">
                 <div th:replace="fragments/post :: post">...</div>
             </div>
 

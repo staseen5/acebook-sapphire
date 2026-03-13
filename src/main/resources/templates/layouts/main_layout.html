@@ -41,7 +41,6 @@
     <title th:replace="${title}">Layout title</title>
 
     <script>
-        // Apply saved theme before page renders (avoids flash)
         (function() {
             const saved = localStorage.getItem('sapphire-theme');
             if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
@@ -55,7 +54,7 @@
 
 <div th:replace="fragments/navbar :: navbar"></div>
 
-<header th:replace="fragments/header :: header"></header>
+<div th:replace="fragments/header :: header"></div>
 
 <div class="content">
     <main id="main-part" th:replace="${main}">
@@ -66,7 +65,6 @@
 <script src="/scripts/mentions.js"></script>
 
 <script>
-    // Dark mode toggle
     const toggle = document.getElementById('theme-toggle');
     const html = document.documentElement;
 
