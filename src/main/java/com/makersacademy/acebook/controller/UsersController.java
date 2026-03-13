@@ -7,6 +7,7 @@ import com.makersacademy.acebook.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,7 +16,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.io.IOException;
 import java.util.Map;
 
-@RestController
+@Controller
 public class UsersController {
     @Autowired
     UserRepository userRepository;
@@ -33,7 +34,7 @@ public class UsersController {
         User user = userRepository
                 .findUserByEmail(email)
                 .orElseGet(() -> userRepository.save(new User(email)));
-        
+
         if (user.getFirstName() == null || user.getFirstName().isEmpty()) {
             return new RedirectView("/users/setup");
         }
@@ -43,7 +44,16 @@ public class UsersController {
 
     @GetMapping("/users/setup")
     public ModelAndView setup() {
+        DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+        String email = (String) principal.getAttributes().get("email");
+        User user = userRepository.findByEmail(email);
+
         ModelAndView setupPage = new ModelAndView("users/setup");
+        setupPage.addObject("isFirstSetup", true);
+        setupPage.addObject("user", user);
         return setupPage;
     }
 
@@ -51,7 +61,8 @@ public class UsersController {
     public RedirectView saveProfile(@RequestParam("profile-picture") MultipartFile profilePicture,
                                     @RequestParam String firstName,
                                     @RequestParam String lastName,
-                                    @RequestParam String username) throws IOException {
+                                    @RequestParam String username,
+                                    @RequestParam boolean isFirstSetup) throws IOException {
         DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
                 .getContext()
                 .getAuthentication()
@@ -71,6 +82,26 @@ public class UsersController {
         }
 
         userRepository.save(user);
-        return new RedirectView("/");
+        if (isFirstSetup) {
+            return new RedirectView("/");
+        } else {
+            return new RedirectView("/profile/" + user.getUsername());
+        }
+    }
+
+    @GetMapping("/profile/edit")
+    public ModelAndView editProfilePage() {
+        DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getPrincipal();
+
+        String email = (String) principal.getAttributes().get("email");
+        User user = userRepository.findByEmail(email);
+
+        ModelAndView editProfile = new ModelAndView("users/setup");
+        editProfile.addObject("isFirstSetup", false);
+        editProfile.addObject("user", user);
+        return editProfile;
     }
 }

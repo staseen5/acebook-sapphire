@@ -25,6 +25,8 @@
             <div id="user-full-name-text" style="display: flex; gap: 6px;">
                 <h1 th:text="${user.firstName}"></h1>
                 <h1 th:text="${user.lastName}"></h1>
+
+                <a th:href="@{/profile/edit}" class="edit-profile-link"><i class="fas fa-edit"></i>Edit profile</a>
             </div>
 
             <h4 id="username-text" th:text="'username: ' + ${user.username}"></h4>
