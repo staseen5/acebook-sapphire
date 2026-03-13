@@ -357,6 +357,19 @@ main {
     cursor: pointer;
 }
 
+/* Edit profile link */
+.edit-profile-link {
+    color: black;
+    text-decoration: none;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.edit-profile-link:hover {
+    text-decoration: underline;
+}
 
 /* Generic */
 .center-overlay {
