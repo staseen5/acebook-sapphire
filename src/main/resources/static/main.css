@@ -1,3 +1,5 @@
+/*Commented out old version*/
+
 /*:root {*/
 /*    --page-bg-color: #ffffff;*/
 /*    --primary-bg-color-top: #1540a3;*/
@@ -246,6 +248,7 @@
 
 /*.create-profile-input {*/
 /*    width: 100%;*/
+/*    border-radius: 4px;*/
 /*}*/
 
 /*.create-profile-button-div {*/
@@ -589,7 +592,7 @@
 /*}*/
 
 /*.user-details a {*/
-/*    text-decoration: none;  */
+/*    text-decoration: none;*/
 /*}*/
 
 /*.comment-content a {*/
@@ -602,16 +605,49 @@
 /*    margin-top: 0px;*/
 /*}*/
 
-/* ============================================================
-   SAPPHIRE — main.css
-   Light/dark mode via [data-theme="dark"] on <html>
-   ============================================================ */
+/*.logindiv a {*/
+/*    text-decoration: none;*/
+/*}*/
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Lora:wght@400;500&display=swap');
+/*.loginbutton {*/
+/*    color: black;*/
+/*    background-color: white;*/
+/*    border-radius: 8px;*/
+/*    font-size: 14px;*/
+/*    padding: 4px;*/
+/*    padding-left: 8px;*/
+/*    padding-right: 8px;*/
+/*}*/
 
-/* ============================================================
-   DESIGN TOKENS
-   ============================================================ */
+/*.loginbutton a {*/
+/*    text-decoration: none;*/
+/*    color: black;*/
+/*}*/
+
+/*.logindiv {*/
+/*    margin-left: 64px;*/
+/*}*/
+
+/*.logoutdiv {*/
+/*    display: flex;*/
+/*    flex-direction: column;*/
+/*    align-items: end;*/
+/*}*/
+
+/*.header img {*/
+/*    width: 50px;*/
+/*    height: 50px;*/
+/*}*/
+
+/*.padding-div {*/
+/*    width: 50px;*/
+/*    height: 75px;*/
+/*}*/
+
+/*.setup-main {*/
+/*    background-color: white;*/
+/*}*/
+
 :root {
     --page-bg-color: #f4f6fb;
     --primary-bg-color-top: #1540a3;

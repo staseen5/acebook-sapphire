@@ -1,34 +1,27 @@
-<!--<header th:fragment="header">-->
+<header th:fragment="header" class="header">
 
-<!--  <div>-->
-<!--  </div>-->
+    <div class="header-searchbar-container">
+        <form th:action="@{/search}" method="get" style="display: flex">
+            <input id="posts-searchbar" type="text" name="keyword" placeholder="Search posts..." />
+        </form>
+    </div>
 
-<!--  <div class="header-searchbar-container">-->
-<!--    <form th:action="@{/search}" method="get" style="display: flex">-->
-<!--      <input id="posts-searchbar" type="text" name="keyword" placeholder="search posts..." />-->
-<!--    </form>-->
-<!--  </div>-->
-
-
-<!--  <div th:if="${#authorization.expression('isAuthenticated()')}">-->
-<!--    <span th:text="${#authentication?.principal?.attributes?.get('email')}"></span>-->
-<!--  </div>-->
-
-<!--</header>-->
-<header th:fragment="header">
-
-  <div class="header-searchbar-container">
-    <form th:action="@{/search}" method="get">
-      <input id="posts-searchbar" type="text" name="keyword" placeholder="Search posts..." />
-    </form>
-  </div>
-
-  <div style="display: flex; align-items: center; gap: 12px; margin-left: auto;">
+    <div style="display: flex; align-items: center; gap: 12px; margin-left: auto;">
     <span th:if="${#authorization.expression('isAuthenticated()')}"
           style="font-size: 13px; color: rgba(255,255,255,0.7);"
           th:text="${#authentication?.principal?.attributes?.get('email')}">
     </span>
-    <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode">🌙</button>
-  </div>
+        <button id="theme-toggle" title="Toggle dark mode" aria-label="Toggle dark mode">🌙</button>
+        <a th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/logout}">
+            <button class="loginbutton" style="background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 6px; padding: 6px 14px; cursor: pointer; font-size: 13px;">
+                Log Out
+            </button>
+        </a>
+        <a th:unless="${#authorization.expression('isAuthenticated()')}" href="/authorize">
+            <button class="loginbutton" style="background: rgba(255,255,255,0.15); color: white; border: 1px solid rgba(255,255,255,0.3); border-radius: 6px; padding: 6px 14px; cursor: pointer; font-size: 13px;">
+                Log In
+            </button>
+        </a>
+    </div>
 
 </header>
