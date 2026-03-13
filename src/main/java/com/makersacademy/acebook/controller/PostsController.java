@@ -143,7 +143,7 @@ public class PostsController {
         Matcher matcher = TAG_REGEX.matcher(post.getContent());
         while (matcher.find()) {
             String mentionedUser = matcher.group(1);
-            User taggedUser = userRepository.findByUsername(mentionedUser);
+            User taggedUser = userRepository.findByUsername(mentionedUser).orElse(null);
 
             if (taggedUser == null) continue;
             if (taggedUser.getId().equals(post.getUser().getId())) continue;
