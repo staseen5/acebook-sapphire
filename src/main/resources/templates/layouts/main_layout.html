@@ -1,3 +1,33 @@
+<!--<!DOCTYPE html>-->
+<!--<html-->
+<!--        lang="en"-->
+<!--        th:fragment="layout(title, main)"-->
+<!--        xmlns:th="http://www.thymeleaf.org">-->
+
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <link rel="stylesheet" href="/main.css">-->
+<!--    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">-->
+
+<!--    <title th:replace="${title}">Layout title</title>-->
+<!--</head>-->
+
+<!--<body>-->
+
+<!--<div th:replace="fragments/navbar :: navbar"></div>-->
+
+<!--<header th:replace="fragments/header :: header"></header>-->
+
+<!--<div class="content">-->
+<!--    <main id="main-part" th:replace="${main}">-->
+<!--        <p><em>This content must not be visible.</em></p>-->
+<!--    </main>-->
+<!--</div>-->
+
+<!--<script src="/scripts/mentions.js"></script>-->
+
+<!--</body>-->
+<!--</html>-->
 <!DOCTYPE html>
 <html
         lang="en"
@@ -8,8 +38,17 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/main.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
     <title th:replace="${title}">Layout title</title>
+
+    <script>
+        // Apply saved theme before page renders (avoids flash)
+        (function() {
+            const saved = localStorage.getItem('sapphire-theme');
+            if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        })();
+    </script>
 </head>
 
 <body>
@@ -25,6 +64,27 @@
 </div>
 
 <script src="/scripts/mentions.js"></script>
+
+<script>
+    // Dark mode toggle
+    const toggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+
+    function updateToggleIcon() {
+        const isDark = html.getAttribute('data-theme') === 'dark';
+        if (toggle) toggle.textContent = isDark ? '☀️' : '🌙';
+    }
+
+    if (toggle) {
+        updateToggleIcon();
+        toggle.addEventListener('click', () => {
+            const isDark = html.getAttribute('data-theme') === 'dark';
+            html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            localStorage.setItem('sapphire-theme', isDark ? 'light' : 'dark');
+            updateToggleIcon();
+        });
+    }
+</script>
 
 </body>
 </html>

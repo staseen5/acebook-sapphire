@@ -6,13 +6,13 @@
           th:text="${user.firstName + (user.lastName != null ? ' ' + user.lastName : '')}">
 </span>
   </div>
+  <a th:href="@{/}">Home</a>
    <a th:if="${user != null}"
    th:href="${user.username != null and !#strings.isEmpty(user.username)} 
        ? @{/profile/{username}(username=${user.username})} 
        : @{/users/setup}">Profile</a>
  
 
-  <a th:href="@{/}">Home</a>
   <a th:href="@{/friends}">Friends</a>
   <a th:href="@{/}">Events</a>
   <a th:href="@{/}">Games</a>
