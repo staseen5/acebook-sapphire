@@ -1,6 +1,7 @@
-<header th:fragment="header">
+<header th:fragment="header" class="header">
 
   <div>
+    <img th:src="@{/images/logoipsum-415.svg}" alt="sapphire-logo">
   </div>
 
   <div class="header-searchbar-container">
@@ -10,8 +11,20 @@
   </div>
 
 
-  <div th:if="${#authorization.expression('isAuthenticated()')}">
-    <span th:text="${#authentication?.principal?.attributes?.get('email')}"></span>
+  <div class="logoutdiv" th:if="${#authorization.expression('isAuthenticated()')}">
+    <!--<p>Logged in as <span th:text=""</p>-->
+    <p th:if="${#authorization.expression('isAuthenticated()')}">
+      Logged in as: <span th:text="${#authentication.principal.email}"></span>
+    </p>
+    <a href="/logout"><button class="loginbutton"><span>Log Out</span></button></a>
+  </div>
+
+  <div class="logindiv" th:unless="${#authorization.expression('isAuthenticated()')}">
+    <a href="/authorize">
+      <button class="loginbutton">
+          <span>Log In</span>
+      </button>
+    </a>
   </div>
 
 </header>

@@ -14,5 +14,5 @@
   <a th:href="@{/}">Games</a>
 
 
-    <a style="margin-top: auto;" th:href="@{/logout}">Logout</a>
+    <!_-<a style="margin-top: auto;" th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/logout}">Logout</a>-->
 </nav>

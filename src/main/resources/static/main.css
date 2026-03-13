@@ -601,3 +601,42 @@ main {
     font-size: 10px;
     margin-top: 0px;
 }
+
+.logindiv a {
+    text-decoration: none;
+}
+
+.loginbutton {
+    color: black;
+    background-color: white;
+    border-radius: 8px;
+    font-size: 14px;
+    padding: 4px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.loginbutton a {
+    text-decoration: none;
+    color: black;
+}
+
+.logindiv {
+    margin-left: 64px;
+}
+
+.logoutdiv {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+}
+
+.header img {
+    width: 50px;
+    height: 50px;
+}
+
+.padding-div {
+    width: 50px;
+    height: 75px;
+}
