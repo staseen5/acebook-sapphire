@@ -75,7 +75,7 @@
         </a>
 
         <div class="comment-content">
-            <a th:href="@{/profile/{username}(username=${post.user.username})}">
+            <a th:href="@{/profile/{username}(username=${comment.user.username})}">
                 <p class="comment-name" th:text="${comment.user.getFirstName()} + ' ' + ${comment.user.getLastName()}"></p>
                 <!--<p class="comment-username" th:text="${comment.user.getUsername()}"></p>-->
             </a>
