@@ -104,7 +104,7 @@ public class FriendshipController {
             friendshipRepository.save(f);
         });
 
-        return new RedirectView("/friendships");
+        return new RedirectView("/friends");
     }
 
     @PostMapping("/decline/{username}")
@@ -117,7 +117,7 @@ public class FriendshipController {
 
         friendship.ifPresent(f -> friendshipRepository.delete(f));
 
-        return new RedirectView("/friendships");
+        return new RedirectView("/friends");
     }
 
     @PostMapping("/block/{username}")
