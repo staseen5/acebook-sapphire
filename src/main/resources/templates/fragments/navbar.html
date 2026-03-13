@@ -5,7 +5,6 @@
           th:text="${loggedInUser.firstName + (loggedInUser.lastName != null ? ' ' + loggedInUser.lastName : '')}">
     </span>
   </div>
-  <p th:text="${loggedInUser != null ? loggedInUser.username : 'NO LOGGED IN USER'}"></p>
   <a th:if="${loggedInUser != null and loggedInUser.username != null}"
      th:href="@{/profile/{username}(username=${loggedInUser.username})}">Profile</a>
   <a th:href="@{/}">Home</a>
