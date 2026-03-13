@@ -5,8 +5,6 @@ import com.makersacademy.acebook.model.Post;
 import com.makersacademy.acebook.model.User;
 import com.makersacademy.acebook.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -38,18 +31,17 @@ public class ProfileController {
     @Autowired
     FriendshipRepository friendshipRepository;
 
-    // tell Spring Boot this method handles the "GET '/'" request
     @GetMapping("/profile/{username}")
     public ModelAndView getProfile(@PathVariable String username, Principal principal) {
 
         if (username == null || username.isBlank()) {
-                return new ModelAndView("redirect:/");
+            return new ModelAndView("redirect:/");
         }
 
         ModelAndView profilePage = new ModelAndView("profiles/profile_page");
 
         User profileUser = userRepository.findByUsername(username).orElseThrow();
-        profilePage.addObject("user", profileUser);
+        profilePage.addObject("profileUser", profileUser);
 
         // Friends list
         List<Friendship> acceptedFriendships = friendshipRepository
@@ -74,7 +66,7 @@ public class ProfileController {
         }
         profilePage.addObject("likeCounts", likeCounts);
 
-        // Tagged + own posts merged (from theirs)
+        // Tagged + own posts merged
         List<Post> taggedPosts = postTagRepository.findByIdUserId(profileUser.getId())
                 .stream()
                 .map(tag -> postRepository.findById(tag.getId().getPostId()).orElse(null))
@@ -108,10 +100,14 @@ public class ProfileController {
         photoPosts.sort(Comparator.comparing(Post::getCreatedAt).reversed());
         profilePage.addObject("photoPosts", photoPosts);
 
-        // Friendship status relative to the logged-in user
+        // Logged-in user — always set as "user" so navbar works correctly
         if (principal != null) {
             String currentUserEmail = getEmailFromPrincipal(principal);
             User currentUser = userRepository.findByEmail(currentUserEmail);
+
+            if (currentUser != null) {
+                profilePage.addObject("user", currentUser);
+            }
 
             if (currentUser != null && !currentUser.getId().equals(profileUser.getId())) {
                 Optional<Friendship> iSentRequest = friendshipRepository
