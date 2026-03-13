@@ -1,15 +1,18 @@
 <nav th:fragment="navbar" class="navbar">
   <img th:src="@{/images/logoipsum-415.svg}" alt="sapphire-logo">
-  <div class="navbar-user"
-       th:if="${#authorization.expression('isAuthenticated()')}">
-    <span th:if="${user != null and user.firstName != null}"
-          th:text="${user.firstName + (user.lastName != null ? ' ' + user.lastName : '')}">
+  <div class="navbar-user" th:if="${loggedInUser != null}">
+    <span th:if="${loggedInUser.firstName != null}"
+          th:text="${loggedInUser.firstName + (loggedInUser.lastName != null ? ' ' + loggedInUser.lastName : '')}">
     </span>
   </div>
   <a th:href="@{/}">Home</a>
-  <a th:if="${user != null}" th:href="@{/profile/{username}(username=${user.username})}">Profile</a>
+  <a th:if="${loggedInUser != null}"
+     th:href="${loggedInUser.username != null and !#strings.isEmpty(loggedInUser.username)}
+       ? @{/profile/{username}(username=${loggedInUser.username})}
+       : @{/users/setup}">Profile</a>
   <a th:href="@{/friends}">Friends</a>
   <a th:href="@{/}">Events</a>
   <a th:href="@{/}">Games</a>
-  <a style="margin-top: auto;" th:href="@{/logout}">Logout</a>
+
+  <!--<a style="margin-top: auto;" th:if="${#authorization.expression('isAuthenticated()')}" th:href="@{/logout}">Logout</a>-->
 </nav>
