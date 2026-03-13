@@ -14,7 +14,6 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-@ActiveProfiles("test")
 public class SignUpTest {
     Playwright playwright;
     Browser browser;
@@ -40,17 +39,30 @@ public class SignUpTest {
         playwright.close();
     }
 
-//    @Test
-//    public void successfulSignUpAlsoLogsInUser() {
-//        String email = faker.name().username() + "@email.com";
-//
+    @Test
+    public void successfulSignUpAlsoLogsInUser() {
 //        page.navigate("http://localhost:8081/");
+//
+//        // Create user variables
+//        String username = faker.name().username() + "@email.com";
+//        String email = username + "@email.com";
+//        String firstName = faker.name().firstName();
+//        String lastName = faker.name().lastName();
+//
+//        // Sign up with Auth0
 //        page.getByRole(AriaRole.LINK, new Page.GetByRoleOptions().setName("Sign up")).click();
 //        page.locator("[name=email]").fill(email);
 //        page.locator("[name=password]").fill("P@55qw0rd");
 //        page.locator("[name=action]").click();
-//        Locator greeting = page.locator("#greeting");
 //
-//        assertThat(greeting).hasText("Signed in as " + email);
-//    }
+//        // Complete user setup
+//        page.locator("[name=username]").fill(username);
+//        page.locator("[name=firstName]").fill(firstName);
+//        page.locator("[name=lastName]").fill(lastName);
+//        page.locator("[name=updateUserBtn]").click();
+//
+//        // Check greeting is correct
+//        Locator greeting = page.locator("#greeting");
+//        assertThat(greeting).hasText("Hello, " + firstName + ' ' + lastName);
+    }
 }
