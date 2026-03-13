@@ -39,7 +39,7 @@ public class FriendshipController {
         User currentUser = userRepository.findByEmail(getUsernameFromPrincipal(principal));
 
         List<Friendship> acceptedFriendships = friendshipRepository
-                .findByIdRequesterIdOrIdAddresseeIdAndStatus(currentUser.getId(), currentUser.getId(), "ACCEPTED");
+                .findByUserIdAndStatus(currentUser.getId(), "ACCEPTED");
 
         List<User> friends = acceptedFriendships.stream()
                 .map(f -> {
