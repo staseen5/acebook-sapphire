@@ -5,6 +5,8 @@ import com.makersacademy.acebook.model.Post;
 import com.makersacademy.acebook.model.User;
 import com.makersacademy.acebook.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,7 +40,10 @@ public class ProfileController {
 
     // tell Spring Boot this method handles the "GET '/'" request
     @GetMapping("/profile/{username}")
-    public ModelAndView getProfile(@PathVariable String username, Principal principal) {
+    public ModelAndView getProfile(@PathVariable String username) {
+        if (username == null || username.isBlank()) {
+                return new ModelAndView("redirect:/");
+        }
         ModelAndView profilePage = new ModelAndView("profiles/profile_page");
 
         User profileUser = userRepository.findByUsername(username).orElseThrow();
