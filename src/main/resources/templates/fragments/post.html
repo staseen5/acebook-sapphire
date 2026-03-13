@@ -24,7 +24,7 @@
     </div>
 
     <div class="post-content-container">
-        <p class="post-content-text" th:text="${post.content}"/>
+        <p class="post-content-text mention-content" th:text="${post.content}"></p>
         <div class="post-img-parent">
             <img th:if="${post.imageUrl != null}"
                  th:src="${post.imageUrl}"
@@ -39,7 +39,7 @@
                       style="cursor: pointer; font-size: 20px;"
                       th:text="${likedPostIds != null and likedPostIds.contains(post.id)} ? '❤️' : '🤍'">
                 </span>
-                <small class="like-count" th:text="${likeCounts[post.id]} + ' likes'"></small>
+                <small th:text="${(likeCounts[post.id] != null ? likeCounts[post.id] : 0)} + ' likes'"></small>
             </div>
         </div>
     </div>

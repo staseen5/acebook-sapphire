@@ -4,11 +4,9 @@ import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.makersacademy.acebook.model.Post;
 import com.makersacademy.acebook.model.Comment;
+import com.makersacademy.acebook.model.PostTag;
 import com.makersacademy.acebook.model.User;
-import com.makersacademy.acebook.repository.PostRepository;
-import com.makersacademy.acebook.repository.CommentRepository;
-import com.makersacademy.acebook.repository.PostLikeRepository;
-import com.makersacademy.acebook.repository.UserRepository;
+import com.makersacademy.acebook.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
@@ -24,6 +22,8 @@ import java.util.Map;
 import java.util.HashMap;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Controller
 public class PostsController {
@@ -34,12 +34,14 @@ public class PostsController {
     private Cloudinary cloudinary;
     @Autowired
     UserRepository userRepository;
-
     @Autowired
     CommentRepository commentRepository;
-
     @Autowired
     PostLikeRepository postLikeRepository;
+    @Autowired
+    PostTagRepository postTagRepository;
+
+    private static final Pattern TAG_REGEX = Pattern.compile("@(\\w+)");
 
     @GetMapping("/")
     public String index(Model model, Principal principal) {
@@ -108,6 +110,7 @@ public class PostsController {
 
         post.setCreatedAt(ZonedDateTime.now());
         repository.save(post);
+        saveTags(post);
         return new RedirectView("/");
     }
 
@@ -132,5 +135,21 @@ public class PostsController {
 
         commentRepository.save(new_comment);
         return new RedirectView("/");
+    }
+
+    private void saveTags(Post post){
+        if(post.getContent() == null) return;
+
+        Matcher matcher = TAG_REGEX.matcher(post.getContent());
+        while (matcher.find()) {
+            String mentionedUser = matcher.group(1);
+            User taggedUser = userRepository.findByUsername(mentionedUser).orElse(null);
+
+            if (taggedUser == null) continue;
+            if (taggedUser.getId().equals(post.getUser().getId())) continue;
+            if (postTagRepository.existsByIdPostIdAndIdUserId(post.getId(), taggedUser.getId())) continue;
+
+            postTagRepository.save(new PostTag(post.getId(), taggedUser.getId()));
+        }
     }
 }
