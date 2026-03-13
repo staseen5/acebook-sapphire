@@ -36,7 +36,7 @@
                th:src="${friend.getProfilePictureUrl()}"/>
           <a th:href="@{/profile/{username}(username=${friend.username})}"
              th:text="${friend.username}"></a>
-          <form th:action="@{/friendships/unfriend/{username}(username=${friend.username})}" method="post">
+          <form th:action="@{/friends/unfriend/{username}(username=${friend.username})}" method="post">
             <button type="submit" class="btn-danger">Unfriend</button>
           </form>
         </div>
@@ -55,10 +55,10 @@
           <a th:href="@{/profile/{username}(username=${request.requester.username})}"
              th:text="${request.requester.username}"></a>
           <div class="friend-card-actions">
-            <form th:action="@{/friendships/accept/{username}(username=${request.requester.username})}" method="post">
+            <form th:action="@{/friends/accept/{username}(username=${request.requester.username})}" method="post">
               <button type="submit" class="btn-primary">Accept</button>
             </form>
-            <form th:action="@{/friendships/decline/{username}(username=${request.requester.username})}" method="post">
+            <form th:action="@{/friends/decline/{username}(username=${request.requester.username})}" method="post">
               <button type="submit" class="btn-danger">Decline</button>
             </form>
           </div>
