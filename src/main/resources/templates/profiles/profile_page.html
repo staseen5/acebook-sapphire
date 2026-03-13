@@ -161,7 +161,7 @@
 
             <h3>MY POSTS:</h3>
 
-            <div th:each="post: ${user.getPosts()}">
+            <div th:each="post: ${allPosts}">
                 <div th:replace="fragments/post :: post">...</div>
             </div>
 

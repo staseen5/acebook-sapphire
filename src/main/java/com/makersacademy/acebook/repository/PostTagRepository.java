@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface PostTagRepository extends CrudRepository<PostTag, PostTagId> {
     List<PostTag> findByIdUserId(Long userId);
+    List<PostTag> findByIdPostId(Long postId);
 
     boolean existsByIdPostIdAndIdUserId(Long postId, Long userId);
 }
