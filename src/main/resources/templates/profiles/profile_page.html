@@ -8,6 +8,7 @@
 </head>
 
 <body>
+
 <main>
 
     <div id="user-info-container"
@@ -23,9 +24,13 @@
             <div id="user-full-name-text" style="display: flex; gap: 6px;">
                 <h1 th:text="${user.firstName}"></h1>
                 <h1 th:text="${user.lastName}"></h1>
+
+                <a th:href="@{/profile/edit}" class="edit-profile-link"><i class="fas fa-edit"></i>Edit profile</a>
             </div>
+
             <h4 id="username-text" th:text="'username: ' + ${user.username}"></h4>
             <p id="user-id-text" th:text="'userID: ' + ${user.id}"></p>
+
         </div>
 
         <!-- Only show action buttons when viewing someone else's profile -->
@@ -119,23 +124,54 @@
                 </div>
             </div>
 
-            <div id="photos-container" style="margin: 6px;">
+            <div id="photos-container" style="margin:6px;">
                 <h3>MY PHOTOS:</h3>
-                <img style="width: 50px; height: 50px; margin: 6px;"
-                     src="https://s.yimg.com/ny/api/res/1.2/RSWsPdqcgZ4uhM_6ELpzMA--/YXBwaWQ9aGlnaGxhbmRlcjt3PTEyMDA7aD03OTg7Y2Y9d2VicA--/https://media.zenfs.com/en/travel.travelleisure.com/fb8d168ea18a4fb2d4eaa6a55dad64eb">
+                <div style="display:flex; flex-wrap:wrap; gap:6px;">
+
+                    <th:block th:each="photoPost : ${photoPosts}">
+                        <img class="profile-photo-thumb"
+                             style="width:80px; height:80px; object-fit:cover; cursor:pointer; border-radius:4px;"
+                             th:src="${photoPost.imageUrl}"
+                             th:alt="'Photo from post by ' + ${photoPost.user.username}"
+                             th:data-full="${photoPost.imageUrl}"
+                             th:data-caption="'Posted by @' + ${photoPost.user.username}"
+                             onclick="openLightbox(this)"/>
+                    </th:block>
+
+                    <p th:if="${photoPosts == null or #lists.isEmpty(photoPosts)}"
+                       style="color:grey; font-size:0.9em;">No photos yet.</p>
+                </div>
             </div>
 
+            <div id="lightbox"
+                 onclick="closeLightbox()"
+                 style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85);
+                        z-index:1000; align-items:center; justify-content:center; flex-direction:column;">
+                <img id="lightbox-img"
+                     style="max-width:90vw; max-height:80vh; border-radius:6px; box-shadow:0 4px 32px rgba(0,0,0,0.5);"/>
+                <p id="lightbox-caption"
+                   style="color:#ccc; margin-top:12px; font-size:0.9em;"></p>
+                <p style="color:#888; font-size:0.8em;">Click anywhere to close</p>
+            </div>
+
+           <script src="/scripts/lightbox.js"></script>
         </div>
 
         <div id="right-page-section" style="flex:2; padding:12px; border: 1px solid black;">
+
             <h3>MY POSTS:</h3>
+
             <div th:each="post: ${user.getPosts()}">
                 <div th:replace="fragments/post :: post">...</div>
             </div>
+
+            <p th:if="${allPosts == null or #lists.isEmpty(allPosts)}"
+               style="color:grey;">No posts yet.</p>
+
         </div>
 
     </div>
-
 </main>
+
 </body>
 </html>

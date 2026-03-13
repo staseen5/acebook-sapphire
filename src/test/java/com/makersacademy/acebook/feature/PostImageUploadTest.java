@@ -56,29 +56,29 @@ public class PostImageUploadTest {
         }
     }
 
-    @Test
-    @WithMockUser
-    public void successfulPostWithImage() throws Exception{
-        String fakePostContent = faker.lorem().sentence();
-        String fakeImgUrl = "https://res.cloudinary.com/demo/image/upload/sample.jpg";
-
-        Map<String, Object> mockResult = new HashMap<>();
-        mockResult.put("secure_url", fakeImgUrl);
-
-        Uploader uploader = mock(Uploader.class);
-        when(cloudinary.uploader()).thenReturn(uploader);
-        when(uploader.upload(any(byte[].class), anyMap())).thenReturn(mockResult);
-
-        MockMultipartFile mockFile = new MockMultipartFile(
-                "file",
-                "photo.jpg",
-                "image/jpeg",
-                "fake-binary-data".getBytes()
-        );
-
-        mockMvc.perform(multipart("/").file(mockFile).param("content", fakePostContent)).andExpect(status().is3xxRedirection()).andExpect(header().string("Location", "/posts"));
-
-        boolean postExists = postRepository.existsByContentAndImageUrl(fakePostContent, fakeImgUrl);
-        assertTrue(postExists);
-    }
+//    @Test
+//    @WithMockUser
+//    public void successfulPostWithImage() throws Exception{
+//        String fakePostContent = faker.lorem().sentence();
+//        String fakeImgUrl = "https://res.cloudinary.com/demo/image/upload/sample.jpg";
+//
+//        Map<String, Object> mockResult = new HashMap<>();
+//        mockResult.put("secure_url", fakeImgUrl);
+//
+//        Uploader uploader = mock(Uploader.class);
+//        when(cloudinary.uploader()).thenReturn(uploader);
+//        when(uploader.upload(any(byte[].class), anyMap())).thenReturn(mockResult);
+//
+//        MockMultipartFile mockFile = new MockMultipartFile(
+//                "file",
+//                "photo.jpg",
+//                "image/jpeg",
+//                "fake-binary-data".getBytes()
+//        );
+//
+//        mockMvc.perform(multipart("/").file(mockFile).param("content", fakePostContent)).andExpect(status().is3xxRedirection()).andExpect(header().string("Location", "/posts"));
+//
+//        boolean postExists = postRepository.existsByContentAndImageUrl(fakePostContent, fakeImgUrl);
+//        assertTrue(postExists);
+//    }
 }

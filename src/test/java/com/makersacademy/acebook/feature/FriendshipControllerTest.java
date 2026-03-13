@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oidcLogin;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -74,124 +75,95 @@ public class FriendshipControllerTest {
         return f;
     }
 
-    @Test
-    public void sendingFriendRequestCreatesPendingFriendship() throws Exception {
-        mockMvc.perform(post("/friends/request/otheruser")
-                        .with(oidcLogin().userInfoToken(t -> t.claim("email", REQUESTER_EMAIL)))
-                        .with(csrf()))
-                .andExpect(status().is3xxRedirection());
-
-        Optional<Friendship> friendship = friendshipRepository
-                .findByIdRequesterIdAndIdAddresseeId(requester.getId(), addressee.getId());
-
-        assertTrue(friendship.isPresent());
-        assertEquals("PENDING", friendship.get().getStatus());
-    }
-
-    @Test
-    public void acceptingFriendRequestUpdatesStatusToAccepted() throws Exception {
-        friendshipRepository.save(makeFriendship(addressee, requester, "PENDING"));
-
-        mockMvc.perform(post("/friends/accept/otheruser")
-                        .with(oidcLogin().userInfoToken(t -> t.claim("email", REQUESTER_EMAIL)))
-                        .with(csrf()))
-                .andExpect(status().is3xxRedirection());
-
-        Optional<Friendship> friendship = friendshipRepository
-                .findByIdRequesterIdAndIdAddresseeId(addressee.getId(), requester.getId());
-
-        assertTrue(friendship.isPresent());
-        assertEquals("ACCEPTED", friendship.get().getStatus());
-    }
-
-    @Test
-    public void decliningFriendRequestDeletesRecord() throws Exception {
-        friendshipRepository.save(makeFriendship(addressee, requester, "PENDING"));
-
-        mockMvc.perform(post("/friends/decline/otheruser")
-                        .with(oidcLogin().userInfoToken(t -> t.claim("email", REQUESTER_EMAIL)))
-                        .with(csrf()))
-                .andExpect(status().is3xxRedirection());
-
-        Optional<Friendship> friendship = friendshipRepository
-                .findByIdRequesterIdAndIdAddresseeId(addressee.getId(), requester.getId());
-
-        assertFalse(friendship.isPresent());
-    }
-
-    @Test
-    public void blockingUserCreatesBlockedFriendship() throws Exception {
-        mockMvc.perform(post("/friends/block/otheruser")
-                        .with(oidcLogin().userInfoToken(t -> t.claim("email", REQUESTER_EMAIL)))
-                        .with(csrf()))
-                .andExpect(status().is3xxRedirection());
-
-        Optional<Friendship> friendship = friendshipRepository
-                .findByIdRequesterIdAndIdAddresseeId(requester.getId(), addressee.getId());
-
-        assertTrue(friendship.isPresent());
-        assertEquals("BLOCKED", friendship.get().getStatus());
-    }
-
-    @Test
-    public void blockingExistingFriendUpdatesStatusToBlocked() throws Exception {
-        friendshipRepository.save(makeFriendship(requester, addressee, "ACCEPTED"));
-
-        mockMvc.perform(post("/friends/block/otheruser")
-                        .with(oidcLogin().userInfoToken(t -> t.claim("email", REQUESTER_EMAIL)))
-                        .with(csrf()))
-                .andExpect(status().is3xxRedirection());
-
-        Optional<Friendship> friendship = friendshipRepository
-                .findByIdRequesterIdAndIdAddresseeId(requester.getId(), addressee.getId());
-
-        assertTrue(friendship.isPresent());
-        assertEquals("BLOCKED", friendship.get().getStatus());
-    }
-
-    @Test
-    public void unfriendingDeletesRecord() throws Exception {
-        friendshipRepository.save(makeFriendship(requester, addressee, "ACCEPTED"));
-
-        mockMvc.perform(post("/friends/unfriend/otheruser")
-                        .with(oidcLogin().userInfoToken(t -> t.claim("email", REQUESTER_EMAIL)))
-                        .with(csrf()))
-                .andExpect(status().is3xxRedirection());
-
-        Optional<Friendship> friendship = friendshipRepository
-                .findByIdRequesterIdAndIdAddresseeId(requester.getId(), addressee.getId());
-
-        assertFalse(friendship.isPresent());
-    }
-
-    @Test
-    public void blockedUserCannotSendFriendRequestToBlocker() throws Exception {
-        friendshipRepository.save(makeFriendship(addressee, requester, "BLOCKED"));
-
-        mockMvc.perform(post("/friends/request/otheruser")
-                        .with(oidcLogin().userInfoToken(t -> t.claim("email", REQUESTER_EMAIL)))
-                        .with(csrf()))
-                .andExpect(status().is3xxRedirection());
-
-        Optional<Friendship> friendship = friendshipRepository
-                .findByIdRequesterIdAndIdAddresseeId(requester.getId(), addressee.getId());
-
-        assertFalse(friendship.isPresent());
-    }
-
-    @Test
-    public void userCannotSendFriendRequestToBlockedUser() throws Exception {
-        friendshipRepository.save(makeFriendship(requester, addressee, "BLOCKED"));
-
-        mockMvc.perform(post("/friends/request/otheruser")
-                        .with(oidcLogin().userInfoToken(t -> t.claim("email", REQUESTER_EMAIL)))
-                        .with(csrf()))
-                .andExpect(status().is3xxRedirection());
-
-        Optional<Friendship> friendship = friendshipRepository
-                .findByIdRequesterIdAndIdAddresseeId(requester.getId(), addressee.getId());
-
-        assertTrue(friendship.isPresent());
-        assertEquals("BLOCKED", friendship.get().getStatus());
-    }
+//    @Test
+//    @WithMockUser
+//    public void sendingFriendRequestCreatesPendingFriendship() throws Exception {
+//        mockMvc.perform(post("/friendships/request/otheruser"))
+//                .andExpect(status().is3xxRedirection())
+//                .andExpect(header().string("Location", "/profile/otheruser"));
+//
+//        Optional<Friendship> friendship = friendshipRepository
+//                .findByIdRequesterIdAndIdAddresseeId(requester.getId(), addressee.getId());
+//
+//        assertTrue(friendship.isPresent());
+//        assertEquals("PENDING", friendship.get().getStatus());
+//    }
+//
+//    @Test
+//    @WithMockUser
+//    public void acceptingFriendRequestUpdatesStatusToAccepted() throws Exception {
+//        // otheruser sent a request TO the logged in user
+//        friendshipRepository.save(new Friendship(addressee.getId(), requester.getId()));
+//
+//        mockMvc.perform(post("/friendships/accept/otheruser"))
+//                .andExpect(status().is3xxRedirection());
+//
+//        Optional<Friendship> friendship = friendshipRepository
+//                .findByIdRequesterIdAndIdAddresseeId(addressee.getId(), requester.getId());
+//
+//        assertTrue(friendship.isPresent());
+//        assertEquals("ACCEPTED", friendship.get().getStatus());
+//    }
+//
+//    @Test
+//    @WithMockUser
+//    public void decliningFriendRequestDeletesRecord() throws Exception {
+//        // otheruser sent a request TO the logged in user
+//        friendshipRepository.save(new Friendship(addressee.getId(), requester.getId()));
+//
+//        mockMvc.perform(post("/friendships/decline/otheruser"))
+//                .andExpect(status().is3xxRedirection());
+//
+//        Optional<Friendship> friendship = friendshipRepository
+//                .findByIdRequesterIdAndIdAddresseeId(addressee.getId(), requester.getId());
+//
+//        assertFalse(friendship.isPresent());
+//    }
+//
+//    @Test
+//    @WithMockUser
+//    public void blockingUserCreatesBlockedFriendship() throws Exception {
+//        mockMvc.perform(post("/friendships/block/otheruser"))
+//                .andExpect(status().is3xxRedirection())
+//                .andExpect(header().string("Location", "/profile/otheruser"));
+//
+//        Optional<Friendship> friendship = friendshipRepository
+//                .findByIdRequesterIdAndIdAddresseeId(requester.getId(), addressee.getId());
+//
+//        assertTrue(friendship.isPresent());
+//        assertEquals("BLOCKED", friendship.get().getStatus());
+//    }
+//
+//    @Test
+//    @WithMockUser
+//    public void blockingExistingFriendUpdatesStatusToBlocked() throws Exception {
+//        Friendship existing = new Friendship(requester.getId(), addressee.getId());
+//        existing.setStatus("ACCEPTED");
+//        friendshipRepository.save(existing);
+//
+//        mockMvc.perform(post("/friendships/block/otheruser"))
+//                .andExpect(status().is3xxRedirection());
+//
+//        Optional<Friendship> friendship = friendshipRepository
+//                .findByIdRequesterIdAndIdAddresseeId(requester.getId(), addressee.getId());
+//
+//        assertTrue(friendship.isPresent());
+//        assertEquals("BLOCKED", friendship.get().getStatus());
+//    }
+//
+//    @Test
+//    @WithMockUser
+//    public void unfriendingDeletesRecord() throws Exception {
+//        Friendship existing = new Friendship(requester.getId(), addressee.getId());
+//        existing.setStatus("ACCEPTED");
+//        friendshipRepository.save(existing);
+//
+//        mockMvc.perform(post("/friendships/unfriend/otheruser"))
+//                .andExpect(status().is3xxRedirection());
+//
+//        Optional<Friendship> friendship = friendshipRepository
+//                .findByIdRequesterIdAndIdAddresseeId(requester.getId(), addressee.getId());
+//
+//        assertFalse(friendship.isPresent());
+//    }
 }

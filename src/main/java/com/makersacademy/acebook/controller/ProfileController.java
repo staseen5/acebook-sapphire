@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class ProfileController {
@@ -30,8 +32,11 @@ public class ProfileController {
     @Autowired
     PostLikeRepository postLikeRepository;
     @Autowired
+    PostTagRepository postTagRepository;
+    @Autowired
     FriendshipRepository friendshipRepository;
 
+    // tell Spring Boot this method handles the "GET '/'" request
     @GetMapping("/profile/{username}")
     public ModelAndView getProfile(@PathVariable String username, Principal principal) {
         ModelAndView profilePage = new ModelAndView("profiles/profile_page");
@@ -62,13 +67,46 @@ public class ProfileController {
         }
         profilePage.addObject("likeCounts", likeCounts);
 
+        // Tagged + own posts merged (from theirs)
+        List<Post> taggedPosts = postTagRepository.findByIdUserId(profileUser.getId())
+                .stream()
+                .map(tag -> postRepository.findById(tag.getId().getPostId()).orElse(null))
+                .filter(Objects::nonNull)
+                .toList();
+
+        List<Post> ownPosts = profileUser.getPosts() != null
+                ? new ArrayList<>(profileUser.getPosts())
+                : new ArrayList<>();
+
+        List<Post> allPosts = new ArrayList<>(ownPosts);
+        for (Post tagged : taggedPosts) {
+            if (allPosts.stream().noneMatch(p -> p.getId().equals(tagged.getId()))) {
+                allPosts.add(tagged);
+            }
+        }
+        allPosts.sort(Comparator.comparing(Post::getCreatedAt).reversed());
+        profilePage.addObject("allPosts", allPosts);
+
+        List<Post> photoPostsOwn = ownPosts.stream()
+                .filter(p -> p.getImageUrl() != null && !p.getImageUrl().isBlank())
+                .toList();
+
+        List<Post> photoPostsTagged = taggedPosts.stream()
+                .filter(p -> p.getImageUrl() != null && !p.getImageUrl().isBlank())
+                .filter(p -> photoPostsOwn.stream().noneMatch(o -> o.getId().equals(p.getId())))
+                .toList();
+
+        List<Post> photoPosts = new ArrayList<>(photoPostsOwn);
+        photoPosts.addAll(photoPostsTagged);
+        photoPosts.sort(Comparator.comparing(Post::getCreatedAt).reversed());
+        profilePage.addObject("photoPosts", photoPosts);
+
         // Friendship status relative to the logged-in user
         if (principal != null) {
             String currentUserEmail = getEmailFromPrincipal(principal);
             User currentUser = userRepository.findByEmail(currentUserEmail);
 
             if (currentUser != null && !currentUser.getId().equals(profileUser.getId())) {
-                // Check all four directional combinations
                 Optional<Friendship> iSentRequest = friendshipRepository
                         .findByIdRequesterIdAndIdAddresseeId(currentUser.getId(), profileUser.getId());
                 Optional<Friendship> theySentRequest = friendshipRepository
@@ -78,7 +116,7 @@ public class ProfileController {
                 String friendshipDirection = null;
 
                 if (iSentRequest.isPresent()) {
-                    friendshipStatus = iSentRequest.get().getStatus(); // PENDING, ACCEPTED, or BLOCKED
+                    friendshipStatus = iSentRequest.get().getStatus();
                     friendshipDirection = "I_SENT";
                 } else if (theySentRequest.isPresent()) {
                     friendshipStatus = theySentRequest.get().getStatus();
