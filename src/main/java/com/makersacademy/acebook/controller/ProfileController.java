@@ -40,10 +40,12 @@ public class ProfileController {
 
     // tell Spring Boot this method handles the "GET '/'" request
     @GetMapping("/profile/{username}")
-    public ModelAndView getProfile(@PathVariable String username) {
+    public ModelAndView getProfile(@PathVariable String username, Principal principal) {
+
         if (username == null || username.isBlank()) {
                 return new ModelAndView("redirect:/");
         }
+
         ModelAndView profilePage = new ModelAndView("profiles/profile_page");
 
         User profileUser = userRepository.findByUsername(username).orElseThrow();
