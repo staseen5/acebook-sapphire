@@ -7,17 +7,24 @@ import com.makersacademy.acebook.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.security.Principal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Controller
 public class ProfileController {
+
     @Autowired
     UserRepository userRepository;
     @Autowired
@@ -39,16 +46,16 @@ public class ProfileController {
         }
         ModelAndView profilePage = new ModelAndView("profiles/profile_page");
 
-        User currentUser = userRepository.findByUsername(username).orElseThrow();
-        profilePage.addObject("user", currentUser);
+        User profileUser = userRepository.findByUsername(username).orElseThrow();
+        profilePage.addObject("user", profileUser);
 
-        // Create list of friends
+        // Friends list
         List<Friendship> acceptedFriendships = friendshipRepository
-                .findByIdRequesterIdOrIdAddresseeIdAndStatus(currentUser.getId(), currentUser.getId(), "ACCEPTED");
+                .findByUserIdAndStatus(profileUser.getId(), "ACCEPTED");
 
         List<User> friends = acceptedFriendships.stream()
                 .map(f -> {
-                    Long friendId = f.getId().getRequesterId().equals(currentUser.getId())
+                    Long friendId = f.getId().getRequesterId().equals(profileUser.getId())
                             ? f.getId().getAddresseeId()
                             : f.getId().getRequesterId();
                     return userRepository.findById(friendId).orElse(null);
@@ -58,21 +65,22 @@ public class ProfileController {
 
         profilePage.addObject("friends", friends);
 
-        // Create hash of post id : amount of likes
+        // Like counts
         Map<Long, Long> likeCounts = new HashMap<>();
-        for (Post post : currentUser.getPosts()) {
+        for (Post post : profileUser.getPosts()) {
             likeCounts.put(post.getId(), postLikeRepository.countByIdPostId(post.getId()));
         }
         profilePage.addObject("likeCounts", likeCounts);
 
-        List<Post> taggedPosts = postTagRepository.findByIdUserId(currentUser.getId())
+        // Tagged + own posts merged (from theirs)
+        List<Post> taggedPosts = postTagRepository.findByIdUserId(profileUser.getId())
                 .stream()
                 .map(tag -> postRepository.findById(tag.getId().getPostId()).orElse(null))
                 .filter(Objects::nonNull)
                 .toList();
 
-        List<Post> ownPosts = currentUser.getPosts() != null
-                ? new ArrayList<>(currentUser.getPosts())
+        List<Post> ownPosts = profileUser.getPosts() != null
+                ? new ArrayList<>(profileUser.getPosts())
                 : new ArrayList<>();
 
         List<Post> allPosts = new ArrayList<>(ownPosts);
@@ -98,6 +106,41 @@ public class ProfileController {
         photoPosts.sort(Comparator.comparing(Post::getCreatedAt).reversed());
         profilePage.addObject("photoPosts", photoPosts);
 
+        // Friendship status relative to the logged-in user
+        if (principal != null) {
+            String currentUserEmail = getEmailFromPrincipal(principal);
+            User currentUser = userRepository.findByEmail(currentUserEmail);
+
+            if (currentUser != null && !currentUser.getId().equals(profileUser.getId())) {
+                Optional<Friendship> iSentRequest = friendshipRepository
+                        .findByIdRequesterIdAndIdAddresseeId(currentUser.getId(), profileUser.getId());
+                Optional<Friendship> theySentRequest = friendshipRepository
+                        .findByIdRequesterIdAndIdAddresseeId(profileUser.getId(), currentUser.getId());
+
+                String friendshipStatus = "NONE";
+                String friendshipDirection = null;
+
+                if (iSentRequest.isPresent()) {
+                    friendshipStatus = iSentRequest.get().getStatus();
+                    friendshipDirection = "I_SENT";
+                } else if (theySentRequest.isPresent()) {
+                    friendshipStatus = theySentRequest.get().getStatus();
+                    friendshipDirection = "THEY_SENT";
+                }
+
+                profilePage.addObject("friendshipStatus", friendshipStatus);
+                profilePage.addObject("friendshipDirection", friendshipDirection);
+            }
+        }
+
         return profilePage;
+    }
+
+    private String getEmailFromPrincipal(Principal principal) {
+        if (principal instanceof OAuth2AuthenticationToken) {
+            OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) principal;
+            return token.getPrincipal().getAttribute("email");
+        }
+        return principal.getName();
     }
 }

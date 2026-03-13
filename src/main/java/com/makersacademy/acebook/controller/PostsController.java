@@ -43,30 +43,58 @@ public class PostsController {
 
     private static final Pattern TAG_REGEX = Pattern.compile("@(\\w+)");
 
+    @Autowired
+    FriendshipRepository friendshipRepository;
+
     @GetMapping("/")
     public String index(Model model, Principal principal) {
-        Iterable<Post> posts = repository.findAllByOrderByCreatedAtDesc();
+        Iterable<Post> allPosts = repository.findAllByOrderByCreatedAtDesc();
+
+        // Build set of user IDs to hide posts from (blocked in either direction)
+        java.util.Set<Long> blockedUserIds = new java.util.HashSet<>();
+        if (principal instanceof OAuth2AuthenticationToken token) {
+            String email = token.getPrincipal().getAttribute("email");
+            User currentUser = userRepository.findByEmail(email);
+            if (currentUser != null) {
+                // People the current user has blocked
+                friendshipRepository.findByIdRequesterIdAndStatus(currentUser.getId(), "BLOCKED")
+                        .forEach(f -> blockedUserIds.add(f.getId().getAddresseeId()));
+                // People who have blocked the current user
+                friendshipRepository.findByIdAddresseeIdAndStatus(currentUser.getId(), "BLOCKED")
+                        .forEach(f -> blockedUserIds.add(f.getId().getRequesterId()));
+            }
+        }
+
+        // Filter posts
+        List<Post> posts = new java.util.ArrayList<>();
+        for (Post post : allPosts) {
+            if (!blockedUserIds.contains(post.getUser().getId())) {
+                posts.add(post);
+            }
+        }
+
         model.addAttribute("posts", posts);
 
         Map<Long, Long> likeCounts = new HashMap<>();
+        java.util.Set<Long> likedPostIds = new java.util.HashSet<>();
+
         for (Post post : posts) {
             likeCounts.put(post.getId(), postLikeRepository.countByIdPostId(post.getId()));
         }
-        model.addAttribute("likeCounts", likeCounts);
 
-        // Build set of post IDs the current user has liked
-        java.util.Set<Long> likedPostIds = new java.util.HashSet<>();
         if (principal instanceof OAuth2AuthenticationToken token) {
             String email = token.getPrincipal().getAttribute("email");
-            User user = userRepository.findByEmail(email);
-            if (user != null) {
+            User currentUser = userRepository.findByEmail(email);
+            if (currentUser != null) {
                 for (Post post : posts) {
-                    if (postLikeRepository.existsByIdUserIdAndIdPostId(user.getId(), post.getId())) {
+                    if (postLikeRepository.existsByIdUserIdAndIdPostId(currentUser.getId(), post.getId())) {
                         likedPostIds.add(post.getId());
                     }
                 }
             }
         }
+
+        model.addAttribute("likeCounts", likeCounts);
         model.addAttribute("likedPostIds", likedPostIds);
         model.addAttribute("post", new Post());
 
