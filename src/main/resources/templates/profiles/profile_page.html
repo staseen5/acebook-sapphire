@@ -25,7 +25,8 @@
                 <h1 th:text="${user.firstName}"></h1>
                 <h1 th:text="${user.lastName}"></h1>
 
-                <a th:href="@{/profile/edit}" class="edit-profile-link"><i class="fas fa-edit"></i>Edit profile</a>
+                <a th:if="${#authentication?.principal?.attributes?.get('email') == user.email}"
+                   th:href="@{/profile/edit}" class="edit-profile-link"><i class="fas fa-edit"></i>Edit profile</a>
             </div>
 
             <h4 id="username-text" th:text="'username: ' + ${user.username}"></h4>
