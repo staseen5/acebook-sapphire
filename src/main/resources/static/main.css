@@ -246,6 +246,7 @@ main {
 
 .create-profile-input {
     width: 100%;
+    border-radius: 4px;
 }
 
 .create-profile-button-div {
@@ -639,4 +640,8 @@ main {
 .padding-div {
     width: 50px;
     height: 75px;
+}
+
+.setup-main {
+    background-color: white;
 }

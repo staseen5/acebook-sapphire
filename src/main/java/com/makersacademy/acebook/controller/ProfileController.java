@@ -5,14 +5,13 @@ import com.makersacademy.acebook.model.Post;
 import com.makersacademy.acebook.model.User;
 import com.makersacademy.acebook.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -35,6 +34,9 @@ public class ProfileController {
     // tell Spring Boot this method handles the "GET '/'" request
     @GetMapping("/profile/{username}")
     public ModelAndView getProfile(@PathVariable String username) {
+        if (username == null || username.isBlank()) {
+                return new ModelAndView("redirect:/");
+        }
         ModelAndView profilePage = new ModelAndView("profiles/profile_page");
 
         User currentUser = userRepository.findByUsername(username).orElseThrow();
