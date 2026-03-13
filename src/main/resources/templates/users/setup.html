@@ -23,7 +23,7 @@
                 <div id="add-profile-pic-div">
                     <label id="add-profile-pic-btn" for="profile-picture" style="cursor: pointer">
                         <img alt="add-profile-picture"
-                             th:src="${user != null ? user.profilePictureUrl : 'https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg'}"/>
+                             th:src="${user.profilePictureUrl != null ? user.profilePictureUrl : 'https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forforums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg'}"/>
                     </label>
                     <input hidden id="profile-picture" name="profile-picture" type="file" accept="image/*">
 
