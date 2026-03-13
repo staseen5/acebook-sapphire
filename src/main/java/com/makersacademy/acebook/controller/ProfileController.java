@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class ProfileController {
@@ -25,6 +27,8 @@ public class ProfileController {
     CommentRepository commentRepository;
     @Autowired
     PostLikeRepository postLikeRepository;
+    @Autowired
+    PostTagRepository postTagRepository;
     @Autowired
     FriendshipRepository friendshipRepository;
 
@@ -58,6 +62,39 @@ public class ProfileController {
             likeCounts.put(post.getId(), postLikeRepository.countByIdPostId(post.getId()));
         }
         profilePage.addObject("likeCounts", likeCounts);
+
+        List<Post> taggedPosts = postTagRepository.findByIdUserId(currentUser.getId())
+                .stream()
+                .map(tag -> postRepository.findById(tag.getId().getPostId()).orElse(null))
+                .filter(Objects::nonNull)
+                .toList();
+
+        List<Post> ownPosts = currentUser.getPosts() != null
+                ? new ArrayList<>(currentUser.getPosts())
+                : new ArrayList<>();
+
+        List<Post> allPosts = new ArrayList<>(ownPosts);
+        for (Post tagged : taggedPosts) {
+            if (allPosts.stream().noneMatch(p -> p.getId().equals(tagged.getId()))) {
+                allPosts.add(tagged);
+            }
+        }
+        allPosts.sort(Comparator.comparing(Post::getCreatedAt).reversed());
+        profilePage.addObject("allPosts", allPosts);
+
+        List<Post> photoPostsOwn = ownPosts.stream()
+                .filter(p -> p.getImageUrl() != null && !p.getImageUrl().isBlank())
+                .toList();
+
+        List<Post> photoPostsTagged = taggedPosts.stream()
+                .filter(p -> p.getImageUrl() != null && !p.getImageUrl().isBlank())
+                .filter(p -> photoPostsOwn.stream().noneMatch(o -> o.getId().equals(p.getId())))
+                .toList();
+
+        List<Post> photoPosts = new ArrayList<>(photoPostsOwn);
+        photoPosts.addAll(photoPostsTagged);
+        photoPosts.sort(Comparator.comparing(Post::getCreatedAt).reversed());
+        profilePage.addObject("photoPosts", photoPosts);
 
         return profilePage;
     }
