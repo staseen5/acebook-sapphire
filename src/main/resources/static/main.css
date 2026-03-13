@@ -80,6 +80,11 @@ main {
     height: 50px;
     object-fit: cover;
 }
+.image-thumbnail-lg {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
 
 /* Post Fragment */
 .post-container {
@@ -214,6 +219,16 @@ main {
     object-fit: cover;
     width: 150px;
     height: 150px;
+}
+
+/* Profile Page */
+.profile-friend-card {
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
 }
 
 /* Create Profile */
@@ -479,6 +494,10 @@ main {
     resize: none;
 }
 
+.comment-text-area:focus {
+    outline: 1px solid #898989;
+}
+
 .comment-text-profile-div {
     display: flex;
     flex-direction: row;
@@ -530,7 +549,7 @@ main {
     gap: 4px;
 }
 
-.comment-username {
+.comment-name {
     font-weight: 600;
     font-size: 14px;
     color: #333;
@@ -552,4 +571,33 @@ main {
 
 .comment-line {
     border: 1px solid #B3B3B3;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.username-text {
+    font-size: 12px;
+    margin-top: 0px;
+}
+
+.name-text {
+    margin-bottom: 2px;
+    color: #1540a3;
+}
+
+.user-details a {
+    text-decoration: none;  
+}
+
+.comment-content a {
+    text-decoration: none;
+}
+
+.comment-username {
+    color: black;
+    font-size: 10px;
+    margin-top: 0px;
 }
