@@ -86,20 +86,7 @@
                 <p style="color:#888; font-size:0.8em;">Click anywhere to close</p>
             </div>
 
-            <script>
-                function openLightbox(thumb) {
-                    const lb = document.getElementById('lightbox');
-                    document.getElementById('lightbox-img').src = thumb.dataset.full;
-                    document.getElementById('lightbox-caption').textContent = thumb.dataset.caption;
-                    lb.style.display = 'flex';
-                }
-                function closeLightbox() {
-                    document.getElementById('lightbox').style.display = 'none';
-                }
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Escape') closeLightbox();
-                });
-            </script>
+           <script src="/scripts/lightbox.js"></script>
         </div>
 
         <div id="right-page-section" style="flex:2; padding:12px; border: 1px solid black;">
