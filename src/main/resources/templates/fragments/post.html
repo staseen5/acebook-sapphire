@@ -39,7 +39,7 @@
                       style="cursor: pointer; font-size: 20px;"
                       th:text="${likedPostIds != null and likedPostIds.contains(post.id)} ? '❤️' : '🤍'">
                 </span>
-                <small class="like-count" th:text="${likeCounts[post.id]} + ' likes'"></small>
+                <small th:text="${(likeCounts[post.id] != null ? likeCounts[post.id] : 0)} + ' likes'"></small>
             </div>
         </div>
     </div>
