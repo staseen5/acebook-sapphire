@@ -90,8 +90,12 @@
         <div class="friend-card" th:each="blocked: ${blockedFriendships}">
           <img class="image-thumbnail"
                alt="profile picture"
-               src="https://static.vecteezy.com/system/resources/thumbnails/036/594/092/small/man-empty-avatar-photo-placeholder-for-social-networks-resumes-forums-and-dating-sites-male-and-female-no-photo-images-for-unfilled-user-profile-free-vector.jpg"/>
-          <span th:text="${blocked.addressee.username}"></span>
+               th:src="${blocked.addressee.getProfilePictureUrl()}"/>
+          <a th:href="@{/profile/{username}(username=${blocked.addressee.username})}"
+             th:text="${blocked.addressee.username}"></a>
+          <form th:action="@{/friends/unfriend/{username}(username=${blocked.addressee.username})}" method="post">
+            <button type="submit" class="btn-primary">Unblock</button>
+          </form>
         </div>
       </div>
     </div>
