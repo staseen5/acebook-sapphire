@@ -16,7 +16,7 @@
         <h1 th:text="${isFirstSetup} ? 'Create a profile' : 'Edit profile'"></h1>
 
         <form class="form-container" th:action="@{/users/setup}" enctype="multipart/form-data" method="post">
-
+            <input type="hidden" name="isFirstSetup" th:value="${isFirstSetup}">
             <div class="profile-picture-div">
 
                 <!-- Button to select profile picture -->

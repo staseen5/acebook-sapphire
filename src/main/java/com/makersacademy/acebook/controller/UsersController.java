@@ -61,7 +61,8 @@ public class UsersController {
     public RedirectView saveProfile(@RequestParam("profile-picture") MultipartFile profilePicture,
                                     @RequestParam String firstName,
                                     @RequestParam String lastName,
-                                    @RequestParam String username) throws IOException {
+                                    @RequestParam String username,
+                                    @RequestParam boolean isFirstSetup) throws IOException {
         DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder
                 .getContext()
                 .getAuthentication()
@@ -81,7 +82,11 @@ public class UsersController {
         }
 
         userRepository.save(user);
-        return new RedirectView("/");
+        if (isFirstSetup) {
+            return new RedirectView("/");
+        } else {
+            return new RedirectView("/profile/" + user.getUsername());
+        }
     }
 
     @GetMapping("/profile/edit")
