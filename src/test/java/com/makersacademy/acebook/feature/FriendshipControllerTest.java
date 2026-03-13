@@ -3,14 +3,15 @@ package com.makersacademy.acebook.feature;
 import com.cloudinary.Cloudinary;
 import com.makersacademy.acebook.model.Friendship;
 import com.makersacademy.acebook.model.User;
+import com.makersacademy.acebook.repository.CommentRepository;
 import com.makersacademy.acebook.repository.FriendshipRepository;
+import com.makersacademy.acebook.repository.PostRepository;
 import com.makersacademy.acebook.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -18,6 +19,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oidcLogin;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -39,26 +42,37 @@ public class FriendshipControllerTest {
     @MockitoBean
     private Cloudinary cloudinary;
 
+    @Autowired
+    private PostRepository postRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
+
     private User requester;
     private User addressee;
+
+    private static final String REQUESTER_EMAIL = "user@test.com";
 
     @BeforeEach
     public void setup() {
         friendshipRepository.deleteAll();
+        commentRepository.deleteAll();
+        postRepository.deleteAll();
+        userRepository.deleteAll();
 
-        Optional<User> requesterUser = userRepository.findByUsername("user");
-        if (requesterUser.isEmpty()) {
-            requester = userRepository.save(new User("user"));
-        } else {
-            requester = requesterUser.get();
-        }
+        requester = userRepository.save(new User(REQUESTER_EMAIL));
 
-        Optional<User> addresseeUser = userRepository.findByUsername("otheruser");
-        if (addresseeUser.isEmpty()) {
-            addressee = userRepository.save(new User("otheruser"));
-        } else {
-            addressee = addresseeUser.get();
-        }
+        addressee = new User("otheruser@test.com");
+        addressee.setUsername("otheruser");
+        addressee = userRepository.save(addressee);
+    }
+
+    private Friendship makeFriendship(User from, User to, String status) {
+        Friendship f = new Friendship(from.getId(), to.getId());
+        f.setRequester(from);
+        f.setAddressee(to);
+        f.setStatus(status);
+        return f;
     }
 
 //    @Test

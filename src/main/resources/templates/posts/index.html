@@ -9,12 +9,12 @@
 </head>
 <body>
 <main>
-   <h1>My Feed</h1>
+   <h1 sec:authorize="isAuthenticated()">My Feed</h1>
 
     <div sec:authorize="isAuthenticated()" id="greeting">
         <!--Signed in as <span sec:authentication="principal.attributes['email']"></span>-->
         <p th:if="${loggedInUser != null}">
-            Hello,<span th:text="${loggedInUser.firstName + (loggedInUser.lastName != null ? ' ' + loggedInUser.lastName : '')}"></span>
+            Hello, <span th:text="${loggedInUser.firstName + (loggedInUser.lastName != null ? ' ' + loggedInUser.lastName : '')}"></span>
         </p>
     </div>
 

@@ -20,8 +20,7 @@
                  th:src="${user.getProfilePictureUrl()}"/>
         </div>
 
-        <div id="user-infor-text" style="flex: 1;">
-
+        <div id="user-info-text" style="flex: 1;">
             <div id="user-full-name-text" style="display: flex; gap: 6px;">
                 <h1 th:text="${user.firstName}"></h1>
                 <h1 th:text="${user.lastName}"></h1>
@@ -35,31 +34,75 @@
 
         </div>
 
-        <div th:if="${#authentication?.principal?.attributes?.get('email') != user.email}"
+        <!-- Only show action buttons when viewing someone else's profile -->
+        <div th:if="${friendshipStatus != null}"
              id="friend-actions-container" style="display:flex; flex-direction: column; gap: 12px">
 
-            <button id="add-friend-btn" class="btn-primary">
-                Add Friend
-                <i class="fa-solid fa-plus"></i>
-            </button>
+            <!-- NONE: no relationship yet -->
+            <th:block th:if="${friendshipStatus == 'NONE'}">
+                <form th:action="@{/friends/request/{u}(u=${user.username})}" method="post">
+                    <button type="submit" class="btn-primary">
+                        Add Friend <i class="fa-solid fa-plus"></i>
+                    </button>
+                </form>
+                <form th:action="@{/friends/block/{u}(u=${user.username})}" method="post">
+                    <button type="submit" class="btn-danger">
+                        Block <i class="fa-solid fa-ban" style="color: darkred"></i>
+                    </button>
+                </form>
+            </th:block>
 
-            <button id="rmv-friend-btn" class="btn-primary">
-                Remove Friend
-                <i class="fa-solid fa-plus"></i>
-            </button>
+            <!-- PENDING + I sent it -->
+            <th:block th:if="${friendshipStatus == 'PENDING' and friendshipDirection == 'I_SENT'}">
+                <p style="color: grey; font-style: italic;">Friend request sent</p>
+                <form th:action="@{/friends/unfriend/{u}(u=${user.username})}" method="post">
+                    <button type="submit" class="btn-secondary">Cancel Request</button>
+                </form>
+            </th:block>
 
-            <button id="block-user-btn" class="btn-danger">
-                Block
-                <i class="fa-solid fa-ban" style="color: darkred"></i>
-            </button>
+            <!-- PENDING + they sent it -->
+            <th:block th:if="${friendshipStatus == 'PENDING' and friendshipDirection == 'THEY_SENT'}">
+                <form th:action="@{/friends/accept/{u}(u=${user.username})}" method="post">
+                    <button type="submit" class="btn-primary">
+                        Accept Request <i class="fa-solid fa-check"></i>
+                    </button>
+                </form>
+                <form th:action="@{/friends/decline/{u}(u=${user.username})}" method="post">
+                    <button type="submit" class="btn-secondary">
+                        Decline <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </form>
+            </th:block>
 
-            <button id="unblock-user-btn" class="btn-danger">
-                Unblock
-                <i class="fa-solid fa-eye" style="color: green"></i>
-            </button>
+            <!-- ACCEPTED -->
+            <th:block th:if="${friendshipStatus == 'ACCEPTED'}">
+                <p style="color: green;">&#10003; Friends</p>
+                <form th:action="@{/friends/unfriend/{u}(u=${user.username})}" method="post">
+                    <button type="submit" class="btn-secondary">Unfriend</button>
+                </form>
+                <form th:action="@{/friends/block/{u}(u=${user.username})}" method="post">
+                    <button type="submit" class="btn-danger">
+                        Block <i class="fa-solid fa-ban" style="color: darkred"></i>
+                    </button>
+                </form>
+            </th:block>
+
+            <!-- BLOCKED by current user -->
+            <th:block th:if="${friendshipStatus == 'BLOCKED' and friendshipDirection == 'I_SENT'}">
+                <p style="color: grey;">User blocked</p>
+                <form th:action="@{/friends/unfriend/{u}(u=${user.username})}" method="post">
+                    <button type="submit" class="btn-danger">
+                        Unblock <i class="fa-solid fa-eye" style="color: green"></i>
+                    </button>
+                </form>
+            </th:block>
+
+            <!-- BLOCKED by them: show nothing -->
+            <th:block th:if="${friendshipStatus == 'BLOCKED' and friendshipDirection == 'THEY_SENT'}">
+            </th:block>
 
         </div>
-        <script src="/scripts/profile-friend-buttons.js"></script>
+
     </div>
 
     <div id="page-container" style="display: flex; gap: 12px;">
@@ -67,11 +110,10 @@
         <div id="left-page-section" style="flex:1; padding:12px; border: 1px solid black;">
 
             <div id="friends-container" style="margin: 6px;">
-
-                <h3 id="friends-header">MY FRIENDS:</h3>
-
+                <h3 id="friends-header">
+                    MY FRIENDS: <a href="/friends" style="font-size: 0.7em; font-weight: normal;">See all</a>
+                </h3>
                 <p th:if="${#lists.isEmpty(friends)}">You have no friends yet.</p>
-
                 <div id="friends-list" style="display: flex">
                     <div class="profile-friend-card" th:each="friend: ${friends}">
                         <img class="image-thumbnail-lg"
@@ -81,7 +123,6 @@
                            th:text="${friend.username}"></a>
                     </div>
                 </div>
-
             </div>
 
             <div id="photos-container" style="margin:6px;">
@@ -121,7 +162,7 @@
 
             <h3>MY POSTS:</h3>
 
-            <div th:each="post : ${allPosts}">
+            <div th:each="post: ${user.getPosts()}">
                 <div th:replace="fragments/post :: post">...</div>
             </div>
 
