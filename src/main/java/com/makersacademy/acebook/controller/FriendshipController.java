@@ -39,7 +39,7 @@ public class FriendshipController {
         User currentUser = userRepository.findByEmail(getUsernameFromPrincipal(principal));
 
         List<Friendship> acceptedFriendships = friendshipRepository
-                .findByIdRequesterIdOrIdAddresseeIdAndStatus(currentUser.getId(), currentUser.getId(), "ACCEPTED");
+                .findByUserIdAndStatus(currentUser.getId(), "ACCEPTED");
 
         List<User> friends = acceptedFriendships.stream()
                 .map(f -> {
@@ -73,11 +73,23 @@ public class FriendshipController {
         User requester = userRepository.findByEmail(getUsernameFromPrincipal(principal));
         User addressee = userRepository.findByUsername(username).orElseThrow();
 
+        boolean blockedByAddressee = friendshipRepository
+                .existsByIdRequesterIdAndIdAddresseeIdAndStatus(addressee.getId(), requester.getId(), "BLOCKED");
+        boolean blockedByRequester = friendshipRepository
+                .existsByIdRequesterIdAndIdAddresseeIdAndStatus(requester.getId(), addressee.getId(), "BLOCKED");
+
+        if (blockedByAddressee || blockedByRequester) {
+            return new RedirectView("/profile/" + username);
+        }
+
         Friendship friendship = new Friendship(requester.getId(), addressee.getId());
+        friendship.setRequester(requester);
+        friendship.setAddressee(addressee);
         friendshipRepository.save(friendship);
 
         return new RedirectView("/profile/" + username);
     }
+
 
     @PostMapping("/accept/{username}")
     public RedirectView acceptRequest(@PathVariable String username, Principal principal) {
@@ -121,6 +133,8 @@ public class FriendshipController {
             friendshipRepository.save(existing.get());
         } else {
             Friendship friendship = new Friendship(requester.getId(), addressee.getId());
+            friendship.setRequester(requester);
+            friendship.setAddressee(addressee);
             friendship.setStatus("BLOCKED");
             friendshipRepository.save(friendship);
         }
